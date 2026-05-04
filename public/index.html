@@ -5,27 +5,27 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#0f1a2e">
 <title>영웅문S#</title>
 <link rel="icon" href="/logo.png" type="image/png">
 <link rel="apple-touch-icon" href="/logo.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html{height:100%;-webkit-text-size-adjust:100%}
-body{height:100%;font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;-webkit-font-smoothing:antialiased;background:#0d1117;color:#e6edf3}
+body{height:100%;font-family:-apple-system,'Pretendard','Apple SD Gothic Neo',sans-serif;-webkit-font-smoothing:antialiased;background:#0f1a2e;color:#e2e8f0}
 :root{
-  --bg:#0d1117;
-  --surface:#161b22;
-  --surface2:#1c2333;
-  --surface3:#21283b;
-  --border:#30363d;
-  --border-light:#21262d;
-  --t1:#e6edf3;
-  --t2:#8b949e;
-  --t3:#484f58;
-  --up:#ff4757;--up-soft:rgba(255,71,87,.12);--up-glow:rgba(255,71,87,.25);
-  --dn:#1e90ff;--dn-soft:rgba(30,144,255,.12);--dn-glow:rgba(30,144,255,.25);
-  --accent:#58a6ff;
+  --bg:#0f1a2e;
+  --surface:#162040;
+  --surface2:#1b2850;
+  --surface3:#223060;
+  --border:#2a3f6e;
+  --border-light:#1e3055;
+  --t1:#e2e8f0;
+  --t2:#94a3b8;
+  --t3:#5a6e8a;
+  --up:#ff4d5e;--up-soft:rgba(255,77,94,.14);--up-glow:rgba(255,77,94,.3);
+  --dn:#3b9eff;--dn-soft:rgba(59,158,255,.14);--dn-glow:rgba(59,158,255,.3);
+  --accent:#6db3f8;
   --radius:14px;--radius-sm:10px;--radius-xs:8px;
 }
 ::-webkit-scrollbar{display:none}
@@ -201,7 +201,7 @@ input[type=number]{-moz-appearance:textfield}
 .bn{
   position:fixed;bottom:0;left:50%;transform:translateX(-50%);
   width:100%;max-width:430px;display:flex;
-  background:rgba(13,17,23,.92);
+  background:rgba(15,26,46,.94);
   backdrop-filter:saturate(180%) blur(20px);-webkit-backdrop-filter:saturate(180%) blur(20px);
   border-top:1px solid var(--border-light);
   padding:6px 0 env(safe-area-inset-bottom,8px);z-index:100;
@@ -308,10 +308,10 @@ function drawChart(){
   ctx.clearRect(0,0,W,H);
 
   const isUp=closes[closes.length-1]>=closes[0];
-  const lineColor=isUp?'#ff4757':'#1e90ff';
+  const lineColor=isUp?'#ff4d5e':'#3b9eff';
 
   // Grid lines (subtle)
-  ctx.strokeStyle='rgba(48,54,61,.4)';ctx.lineWidth=.5;
+  ctx.strokeStyle='rgba(42,63,110,.5)';ctx.lineWidth=.5;
   for(let i=0;i<4;i++){
     const y=pad.t+cH*i/3;
     ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke();
@@ -319,8 +319,8 @@ function drawChart(){
 
   // Fill gradient
   const grad=ctx.createLinearGradient(0,pad.t,0,H-pad.b);
-  grad.addColorStop(0,isUp?'rgba(255,71,87,.15)':'rgba(30,144,255,.15)');
-  grad.addColorStop(1,'rgba(13,17,23,0)');
+  grad.addColorStop(0,isUp?'rgba(255,77,94,.18)':'rgba(59,158,255,.18)');
+  grad.addColorStop(1,'rgba(15,26,46,0)');
   ctx.beginPath();
   for(let i=0;i<closes.length;i++){
     const x=pad.l+(i/(closes.length-1))*cW;
@@ -343,16 +343,16 @@ function drawChart(){
   const lastX=pad.l+((closes.length-1)/(closes.length-1))*cW;
   const lastY=pad.t+(1-(closes[closes.length-1]-minP)/range)*cH;
   ctx.beginPath();ctx.arc(lastX,lastY,3.5,0,Math.PI*2);ctx.fillStyle=lineColor;ctx.fill();
-  ctx.beginPath();ctx.arc(lastX,lastY,6,0,Math.PI*2);ctx.fillStyle=isUp?'rgba(255,71,87,.2)':'rgba(30,144,255,.2)';ctx.fill();
+  ctx.beginPath();ctx.arc(lastX,lastY,6,0,Math.PI*2);ctx.fillStyle=isUp?'rgba(255,77,94,.25)':'rgba(59,158,255,.25)';ctx.fill();
 
   // Price labels
-  ctx.fillStyle='#484f58';ctx.font='500 10px -apple-system,sans-serif';
+  ctx.fillStyle='#5a6e8a';ctx.font='500 10px -apple-system,sans-serif';
   ctx.textAlign='right';
   ctx.fillText(F(maxP),W-pad.r,pad.t+4);
   ctx.fillText(F(minP),W-pad.r,H-pad.b-2);
 
   // Date labels
-  ctx.textAlign='center';ctx.fillStyle='#484f58';
+  ctx.textAlign='center';ctx.fillStyle='#5a6e8a';
   const first=chartData[0].date.trim(),last=chartData[chartData.length-1].date.trim();
   let f1,f2;
   if(chartPeriod==='day'){
@@ -645,6 +645,16 @@ function renderSettings(){
 function T(t){st.tab=t;if(t==='news'&&!newsFetched)fetchNews();R()}
 function goOrder(c){}
 function resetA(){st.hold=[];st.savings=[];saveHoldings();saveSavings();toast('초기화 완료')}
+
+/* ===== 서비스 워커 해제 + 캐시 삭제 ===== */
+if('serviceWorker' in navigator){
+  navigator.serviceWorker.getRegistrations().then(regs=>{
+    regs.forEach(r=>r.unregister());
+  });
+  if('caches' in window){
+    caches.keys().then(keys=>keys.forEach(k=>caches.delete(k)));
+  }
+}
 
 /* ===== INIT ===== */
 loadHoldings();loadSavings();fetchPrices();setInterval(fetchPrices,7000);
