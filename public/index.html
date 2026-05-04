@@ -180,6 +180,53 @@ input[type=number]{-moz-appearance:textfield}
 .ob{padding:16px;border:none;border-radius:var(--radius-sm);font-size:16px;font-weight:700;cursor:pointer;font-family:inherit;color:#fff;transition:all .15s;margin-top:4px;letter-spacing:-.2px}
 .ob:active{transform:scale(.98);opacity:.9}
 
+/* ===== BALANCE (잔고) ===== */
+.bal{padding:16px 20px}
+.bal-sec{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:14px}
+.bal-sec .bs-hd{padding:14px 18px;font-size:14px;font-weight:700;border-bottom:1px solid var(--border-light);color:var(--t2);display:flex;align-items:center;justify-content:space-between}
+.bal-sec .bs-hd .bs-icon{display:flex;align-items:center;gap:8px}
+.bal-sec .bs-hd .bs-icon::before{content:'';width:3px;height:12px;border-radius:2px}
+.bal-sec.stock .bs-hd .bs-icon::before{background:var(--up)}
+.bal-sec.saving .bs-hd .bs-icon::before{background:#3fb950}
+.bal-sec .bs-hd .bs-total{font-size:13px;font-weight:700;color:var(--t1)}
+
+/* Stock balance table */
+.bal-tbl{width:100%;border-collapse:collapse}
+.bal-tbl th{padding:8px 12px;font-size:11px;color:var(--t3);font-weight:500;text-align:right;background:var(--surface2);border-bottom:1px solid var(--border-light)}
+.bal-tbl th:first-child{text-align:left;padding-left:18px}
+.bal-tbl td{padding:10px 12px;font-size:13px;font-weight:600;text-align:right;border-bottom:1px solid var(--border-light);color:var(--t1)}
+.bal-tbl td:first-child{text-align:left;padding-left:18px;font-weight:700;color:var(--t1)}
+.bal-tbl tr:last-child td{border-bottom:none}
+.bal-tbl .up{color:var(--up)}.bal-tbl .dn{color:var(--dn)}
+
+/* Savings list */
+.sav-item{display:flex;justify-content:space-between;align-items:center;padding:14px 18px;border-bottom:1px solid var(--border-light)}
+.sav-item:last-child{border-bottom:none}
+.sav-l .sav-name{font-size:14px;font-weight:600;color:var(--t1)}
+.sav-l .sav-sub{font-size:11px;color:var(--t3);margin-top:3px;display:flex;gap:8px;align-items:center}
+.sav-l .sav-sub .sav-rate{color:#3fb950;font-weight:600}
+.sav-r{text-align:right}
+.sav-r .sav-amt{font-size:14px;font-weight:700;color:var(--t1)}
+.sav-r .sav-int{font-size:11px;color:#3fb950;margin-top:3px;font-weight:600}
+
+.sav-add{display:flex;align-items:center;justify-content:center;gap:6px;padding:14px;cursor:pointer;color:var(--accent);font-size:13px;font-weight:600;border-top:1px solid var(--border-light);transition:background .1s}
+.sav-add:active{background:var(--surface2)}
+.sav-add svg{width:16px;height:16px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+
+/* Savings modal */
+.modal-bg{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.6);z-index:300;display:flex;align-items:flex-end;justify-content:center}
+.modal{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;max-width:430px;width:100%;padding:24px 20px env(safe-area-inset-bottom,20px);border:1px solid var(--border);border-bottom:none}
+.modal .m-title{font-size:17px;font-weight:700;margin-bottom:18px;color:var(--t1)}
+.modal .m-row{margin-bottom:12px}
+.modal .m-row label{display:block;font-size:12px;color:var(--t3);margin-bottom:6px;font-weight:500}
+.modal .m-row input,.modal .m-row select{width:100%;padding:12px 14px;border-radius:var(--radius-xs);border:1px solid var(--border);background:var(--surface2);font-size:14px;color:var(--t1);font-family:inherit}
+.modal .m-row input:focus,.modal .m-row select:focus{outline:none;border-color:var(--accent)}
+.modal .m-btns{display:flex;gap:8px;margin-top:18px}
+.modal .m-btns button{flex:1;padding:14px;border:none;border-radius:var(--radius-xs);font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.modal .m-btns .m-cancel{background:var(--surface3);color:var(--t2)}
+.modal .m-btns .m-ok{background:var(--accent);color:#fff}
+.modal .m-btns button:active{opacity:.8}
+
 /* ===== SETTINGS ===== */
 .stv{padding:20px}
 .sc{background:var(--surface);border-radius:var(--radius);border:1px solid var(--border);overflow:hidden;margin-bottom:14px}
@@ -216,7 +263,7 @@ input[type=number]{-moz-appearance:textfield}
 .toast{position:fixed;bottom:100px;left:50%;transform:translateX(-50%) translateY(10px);background:var(--surface2);color:var(--t1);padding:12px 24px;border-radius:24px;font-size:13px;font-weight:600;opacity:0;transition:all .3s cubic-bezier(.4,0,.2,1);pointer-events:none;white-space:nowrap;z-index:200;box-shadow:0 4px 16px rgba(0,0,0,.4);border:1px solid var(--border)}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 
-.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:100px 20px;color:var(--t3);gap:16px;font-size:13px;font-weight:500}
+.loading{display:flex;flex-direction:column;align-items:center;justify-content:center;height:100vh;height:100dvh;color:var(--t3);gap:16px;font-size:13px;font-weight:500}
 .spinner{width:28px;height:28px;border:2.5px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -234,7 +281,7 @@ input[type=number]{-moz-appearance:textfield}
 </div>
 <script>
 let S=[],isLive=false,lastUpdate=null,serverError=false;
-let st={tab:'home',hold:[],ot:'buy',sel:null,mf:'all',stxt:'',oq:0,op:0,pm:'market',toast:'',tt:null};
+let st={tab:'home',hold:[],ot:'buy',sel:null,mf:'all',stxt:'',oq:0,op:0,pm:'market',toast:'',tt:null,savings:[],showSavModal:false};
 let chartData=[],chartPeriod='1m',chartLoading=false,lastChartCode=null;
 
 const F=n=>Math.round(n).toLocaleString('ko-KR');
@@ -246,6 +293,8 @@ function pnlP(){let p=tp();return p?((te()-p)/p*100):0}
 
 function loadHoldings(){try{const s=localStorage.getItem('hls4_holdings');if(s)st.hold=JSON.parse(s)}catch(e){}}
 function saveHoldings(){try{localStorage.setItem('hls4_holdings',JSON.stringify(st.hold))}catch(e){}}
+function loadSavings(){try{const s=localStorage.getItem('hls4_savings');if(s)st.savings=JSON.parse(s)}catch(e){}}
+function saveSavings(){try{localStorage.setItem('hls4_savings',JSON.stringify(st.savings))}catch(e){}}
 
 const IC={
 home:`<svg viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>`,
@@ -255,6 +304,7 @@ more:`<svg viewBox="0 0 24 24"><circle cx="12" cy="5" r="1.5"/><circle cx="12" c
 bell:`<svg viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`,
 user:`<svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>`,
 search:`<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>`,
+balance:`<svg viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/><line x1="6" y1="14" x2="10" y2="14"/><line x1="6" y1="17" x2="8" y2="17"/></svg>`,
 };
 
 async function fetchPrices(){
@@ -381,6 +431,7 @@ function R(){
   // Tabs
   h+=`<div class="tabs">
     <button class="${st.tab==='home'?'on':''}" onclick="T('home')">내 자산</button>
+    <button class="${st.tab==='balance'?'on':''}" onclick="T('balance')">잔고</button>
     <button class="${st.tab==='order'?'on':''}" onclick="T('order')">매매</button>
     <button class="${st.tab==='market'?'on':''}" onclick="T('market')">종목</button>
   </div>`;
@@ -391,6 +442,7 @@ function R(){
   // Content
   h+='<div class="cnt">';
   if(st.tab==='home')h+=renderHome();
+  else if(st.tab==='balance')h+=renderBalance();
   else if(st.tab==='order')h+=renderOrder();
   else if(st.tab==='market')h+=renderMarket();
   else if(st.tab==='settings')h+=renderSettings();
@@ -402,6 +454,7 @@ function R(){
   // Bottom nav
   h+=`<div class="bn">
     <button class="${st.tab==='home'?'on':''}" onclick="T('home')">${IC.home}<span class="bl">홈</span></button>
+    <button class="${st.tab==='balance'?'on':''}" onclick="T('balance')">${IC.balance}<span class="bl">잔고</span></button>
     <button class="${st.tab==='market'?'on':''}" onclick="T('market')">${IC.market}<span class="bl">종목</span></button>
     <button class="${st.tab==='order'?'on':''}" onclick="T('order')">${IC.order}<span class="bl">매매</span></button>
     <button class="${st.tab==='settings'?'on':''}" onclick="T('settings')">${IC.more}<span class="bl">더보기</span></button>
@@ -447,6 +500,112 @@ function renderHome(){
   }
   return h;
 }
+
+/* ===== BALANCE (잔고) ===== */
+function renderBalance(){
+  let h='<div class="bal">';
+  let totalStock=te(),totalSav=st.savings.reduce((a,s)=>a+s.amount,0);
+  let totalInterest=st.savings.reduce((a,s)=>{
+    let days=Math.floor((Date.now()-s.startDate)/(1000*60*60*24));
+    return a+Math.round(s.amount*s.rate/100/365*days);
+  },0);
+
+  // 주식 잔고 섹션
+  h+=`<div class="bal-sec stock">
+    <div class="bs-hd"><span class="bs-icon">주식 잔고</span><span class="bs-total">${F(totalStock)}원</span></div>`;
+  if(st.hold.length===0){
+    h+='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">보유 주식이 없습니다</div>';
+  }else{
+    h+=`<table class="bal-tbl">
+      <tr><th>종목명</th><th>수량</th><th>매입가</th><th>현재가</th><th>손익</th></tr>`;
+    st.hold.forEach(hd=>{
+      let s=S.find(x=>x.code===hd.c),cur=s?s.price:hd.ap;
+      let pl=(cur-hd.ap)*hd.q,pc=(cur-hd.ap)/hd.ap*100,isUp=pl>=0;
+      h+=`<tr>
+        <td>${hd.n}</td>
+        <td>${F(hd.q)}</td>
+        <td>${F(hd.ap)}</td>
+        <td>${F(cur)}</td>
+        <td class="${isUp?'up':'dn'}">${isUp?'+':''}${F(Math.round(pl))}<br><span style="font-size:11px">${isUp?'+':''}${pc.toFixed(1)}%</span></td>
+      </tr>`;
+    });
+    h+='</table>';
+  }
+  h+='</div>';
+
+  // 적금 섹션
+  h+=`<div class="bal-sec saving">
+    <div class="bs-hd"><span class="bs-icon">적금 목록</span><span class="bs-total">${F(totalSav+totalInterest)}원</span></div>`;
+  if(st.savings.length===0){
+    h+='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">등록된 적금이 없습니다</div>';
+  }else{
+    st.savings.forEach((s,i)=>{
+      let days=Math.floor((Date.now()-s.startDate)/(1000*60*60*24));
+      let interest=Math.round(s.amount*s.rate/100/365*days);
+      let endDate=new Date(s.startDate+s.months*30*24*60*60*1000);
+      let remaining=Math.max(0,Math.ceil((endDate.getTime()-Date.now())/(1000*60*60*24)));
+      h+=`<div class="sav-item">
+        <div class="sav-l">
+          <div class="sav-name">${s.name}</div>
+          <div class="sav-sub"><span class="sav-rate">연 ${s.rate}%</span><span>${s.months}개월 · 잔여 ${remaining}일</span></div>
+        </div>
+        <div class="sav-r">
+          <div class="sav-amt">${F(s.amount)}원</div>
+          <div class="sav-int">+${F(interest)}원</div>
+        </div>
+      </div>`;
+    });
+  }
+  h+=`<div class="sav-add" onclick="openSavModal()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>적금 추가</div>`;
+  h+='</div>';
+
+  // 총 자산 합계
+  h+=`<div class="bal-sec">
+    <div class="bs-hd"><span class="bs-icon" style="color:var(--t1)">총 자산 합계</span></div>
+    <div class="sr"><label>주식 평가금액</label><span class="srv">${F(totalStock)}원</span></div>
+    <div class="sr"><label>적금 원금</label><span class="srv">${F(totalSav)}원</span></div>
+    <div class="sr"><label>적금 이자 (예상)</label><span class="srv" style="color:#3fb950">+${F(totalInterest)}원</span></div>
+    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px">${F(totalStock+totalSav+totalInterest)}원</span></div>
+  </div>`;
+
+  h+='</div>';
+
+  // Savings modal
+  if(st.showSavModal){
+    h+=`<div class="modal-bg" onclick="closeSavModal()">
+      <div class="modal" onclick="event.stopPropagation()">
+        <div class="m-title">적금 추가</div>
+        <div class="m-row"><label>적금명</label><input type="text" id="savName" placeholder="예: 청년희망적금"></div>
+        <div class="m-row"><label>납입 금액 (원)</label><input type="number" id="savAmount" placeholder="100000"></div>
+        <div class="m-row"><label>연이율 (%)</label><input type="number" id="savRate" placeholder="3.5" step="0.1"></div>
+        <div class="m-row"><label>가입 기간 (개월)</label>
+          <select id="savMonths"><option value="6">6개월</option><option value="12" selected>12개월</option><option value="24">24개월</option><option value="36">36개월</option></select>
+        </div>
+        <div class="m-btns">
+          <button class="m-cancel" onclick="closeSavModal()">취소</button>
+          <button class="m-ok" onclick="addSaving()">추가</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  return h;
+}
+
+function openSavModal(){st.showSavModal=true;R()}
+function closeSavModal(){st.showSavModal=false;R()}
+function addSaving(){
+  const name=document.getElementById('savName').value.trim();
+  const amount=parseInt(document.getElementById('savAmount').value)||0;
+  const rate=parseFloat(document.getElementById('savRate').value)||0;
+  const months=parseInt(document.getElementById('savMonths').value)||12;
+  if(!name){toast('적금명을 입력해주세요');return}
+  if(amount<=0){toast('금액을 입력해주세요');return}
+  if(rate<=0){toast('이율을 입력해주세요');return}
+  st.savings.push({name,amount,rate,months,startDate:Date.now()});
+  saveSavings();st.showSavModal=false;toast(`${name} 적금 추가 완료`);R();
+}
+function delSaving(i){st.savings.splice(i,1);saveSavings();toast('적금 삭제 완료');R()}
 
 /* ===== MARKET ===== */
 function renderMarket(){
@@ -546,7 +705,7 @@ function renderSettings(){
 function T(t){st.tab=t;R()}
 function selS(c){let s=S.find(x=>x.code===c);st.sel=c;st.op=s?s.price:0;st.oq=0;st.stxt='';st.pm='market';chartData=[];chartPeriod='1m';R();fetchChart(c,'1m')}
 function goOrder(c){st.tab='order';selS(c)}
-function resetA(){st.hold=[];st.sel=null;st.oq=0;st.op=0;saveHoldings();toast('초기화 완료')}
+function resetA(){st.hold=[];st.savings=[];st.sel=null;st.oq=0;st.op=0;saveHoldings();saveSavings();toast('초기화 완료')}
 
 function exec(){
   if(!st.sel||st.oq<=0){toast('수량을 입력해주세요');return}
@@ -566,7 +725,7 @@ function exec(){
 }
 
 /* ===== INIT ===== */
-loadHoldings();fetchPrices();setInterval(fetchPrices,7000);
+loadHoldings();loadSavings();fetchPrices();setInterval(fetchPrices,7000);
 </script>
 </body>
 </html>
