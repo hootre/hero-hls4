@@ -230,6 +230,51 @@ input[type=number]{-moz-appearance:textfield}
 .err-page .err-desc{font-size:14px;color:var(--t2);line-height:1.7;margin-bottom:28px}
 .err-page .retry-btn{padding:13px 40px;border:none;border-radius:var(--radius-sm);background:var(--accent);color:#fff;font-size:14px;font-weight:600;cursor:pointer;font-family:inherit}
 .err-page .retry-btn:active{opacity:.85}
+
+/* ===== STOCK DETAIL MODAL ===== */
+.sd-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.65);z-index:300;display:flex;align-items:flex-end;justify-content:center}
+.sd-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;max-width:430px;width:100%;max-height:88vh;overflow-y:auto;border:1px solid var(--border);border-bottom:none;padding-bottom:env(safe-area-inset-bottom,16px)}
+.sd-handle{display:flex;justify-content:center;padding:12px 0 4px}
+.sd-handle span{width:36px;height:4px;border-radius:2px;background:var(--border)}
+.sd-close{position:absolute;top:12px;right:16px;width:32px;height:32px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer}
+.sd-close svg{width:16px;height:16px;stroke:var(--t2);fill:none;stroke-width:2;stroke-linecap:round}
+.sd-close:active{opacity:.7}
+
+.sd-top{padding:8px 20px 16px;position:relative}
+.sd-name{font-size:20px;font-weight:800;color:var(--t1);letter-spacing:-.5px}
+.sd-code{font-size:12px;color:var(--t3);margin-top:3px;font-weight:500}
+.sd-price-row{display:flex;align-items:baseline;gap:12px;margin-top:14px}
+.sd-cur{font-size:28px;font-weight:800;letter-spacing:-1px;color:var(--t1)}
+.sd-chg{font-size:14px;font-weight:700;display:flex;align-items:center;gap:4px}
+.sd-chg.up{color:var(--up)}.sd-chg.dn{color:var(--dn)}
+
+/* Detail chart */
+.sd-chart-wrap{margin:0 20px 12px;background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border-light);overflow:hidden}
+.sd-ct{display:flex;padding:2px 4px;border-bottom:1px solid var(--border-light)}
+.sd-ct button{flex:1;padding:9px 0;border:none;background:transparent;font-size:11px;font-weight:600;color:var(--t3);cursor:pointer;font-family:inherit;border-radius:6px;transition:all .15s}
+.sd-ct button:active{background:var(--surface3)}
+.sd-ct button.on{color:var(--accent)}
+.sd-ct button.on::after{display:none}
+.sd-ca{height:180px;padding:12px;position:relative}
+.sd-ca canvas{width:100%;height:100%}
+
+/* Detail info grid */
+.sd-info{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border-light);margin:0 20px 12px;border-radius:var(--radius-sm);overflow:hidden;border:1px solid var(--border-light)}
+.sd-cell{background:var(--surface);padding:14px 16px}
+.sd-cell .sd-label{font-size:11px;color:var(--t3);margin-bottom:6px;font-weight:500}
+.sd-cell .sd-val{font-size:14px;font-weight:700;color:var(--t1);letter-spacing:-.3px}
+.sd-cell .sd-val.up{color:var(--up)}.sd-cell .sd-val.dn{color:var(--dn)}
+.sd-cell .sd-val.green{color:#3fb950}
+
+/* Holding detail section */
+.sd-section{margin:0 20px 12px}
+.sd-sec-title{font-size:12px;font-weight:600;color:var(--t3);margin-bottom:8px;padding-left:2px;text-transform:uppercase;letter-spacing:.5px}
+.sd-sec-card{background:var(--surface2);border-radius:var(--radius-sm);border:1px solid var(--border-light);overflow:hidden}
+.sd-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border-light)}
+.sd-row:last-child{border-bottom:none}
+.sd-row .sd-rl{font-size:13px;color:var(--t2);font-weight:500}
+.sd-row .sd-rv{font-size:14px;font-weight:700;color:var(--t1)}
+.sd-row .sd-rv.up{color:var(--up)}.sd-row .sd-rv.dn{color:var(--dn)}
 </style>
 </head>
 <body>
@@ -369,7 +414,7 @@ function switchChart(p){if(st.sel)fetchChart(st.sel,p)}
 
 /* ===== RENDER ===== */
 function R(){
-  if(st.showSavModal)return;
+  if(st.showSavModal||sdOpen)return;
   const a=document.getElementById('app');
   if(S.length===0&&!serverError)return;
   if(S.length===0&&serverError){
@@ -636,9 +681,171 @@ function renderSettings(){
     <div class="sn" style="text-align:center;padding:16px 0">모의투자 앱입니다. 실제 거래와 무관합니다.</div></div>`;
 }
 
+/* ===== STOCK DETAIL POPUP ===== */
+let sdOpen=false,sdCode=null,sdChartData=[],sdChartPeriod='1m',sdChartLoading=false;
+
+function openStockDetail(code){
+  const s=S.find(x=>x.code===code);
+  if(!s)return;
+  sdOpen=true;sdCode=code;sdChartData=[];sdChartPeriod='1m';
+  const d=document.createElement('div');
+  d.id='sdModal';
+  renderStockDetail(d,s);
+  document.body.appendChild(d);
+  // 차트 불러오기
+  fetchSdChart(code,'1m');
+}
+
+function closeStockDetail(){
+  sdOpen=false;sdCode=null;
+  const m=document.getElementById('sdModal');
+  if(m)m.remove();
+}
+
+function renderStockDetail(container,s){
+  const code=s.code;
+  const hd=st.hold.find(x=>x.c===code);
+  const cur=s.price,chg=s.change||0,chgR=s.changeRate||0;
+  const isUp=chgR>=0,isFlat=chgR===0;
+
+  let html=`<div class="sd-overlay" onclick="closeStockDetail()">
+    <div class="sd-sheet" onclick="event.stopPropagation()">
+      <div class="sd-handle"><span></span></div>
+      <div class="sd-top">
+        <div class="sd-close" onclick="closeStockDetail()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="sd-name">${s.name}</div>
+        <div class="sd-code">${code} · ${s.market||''}</div>
+        <div class="sd-price-row">
+          <span class="sd-cur">${F(cur)}원</span>
+          <span class="sd-chg ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'':isUp?'▲':'▼'} ${isFlat?'0':F(Math.abs(chg))}원 (${isFlat?'0.00':((isUp?'+':'')+chgR.toFixed(2))}%)</span>
+        </div>
+      </div>
+
+      <!-- 차트 -->
+      <div class="sd-chart-wrap">
+        <div class="sd-ct">
+          <button class="${sdChartPeriod==='day'?'on':''}" onclick="switchSdChart('day')">1일</button>
+          <button class="${sdChartPeriod==='1w'?'on':''}" onclick="switchSdChart('1w')">1주</button>
+          <button class="${sdChartPeriod==='1m'?'on':''}" onclick="switchSdChart('1m')">1개월</button>
+          <button class="${sdChartPeriod==='3m'?'on':''}" onclick="switchSdChart('3m')">3개월</button>
+          <button class="${sdChartPeriod==='1y'?'on':''}" onclick="switchSdChart('1y')">1년</button>
+        </div>
+        <div class="sd-ca" id="sdChartArea">
+          ${sdChartLoading?'<div class="cl"><div class="spinner" style="width:18px;height:18px"></div></div>':'<canvas id="sdChart"></canvas>'}
+        </div>
+      </div>
+
+      <!-- 시세 정보 -->
+      <div class="sd-info">
+        <div class="sd-cell"><div class="sd-label">현재가</div><div class="sd-val">${F(cur)}원</div></div>
+        <div class="sd-cell"><div class="sd-label">전일대비</div><div class="sd-val ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'0':((isUp?'+':'')+F(chg))}원</div></div>
+        <div class="sd-cell"><div class="sd-label">등락률</div><div class="sd-val ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'0.00%':((isUp?'+':'')+chgR.toFixed(2)+'%')}</div></div>
+        <div class="sd-cell"><div class="sd-label">거래량</div><div class="sd-val">${s.volume?F(s.volume):'-'}</div></div>
+        <div class="sd-cell"><div class="sd-label">고가</div><div class="sd-val up">${s.high?F(s.high):'-'}</div></div>
+        <div class="sd-cell"><div class="sd-label">저가</div><div class="sd-val dn">${s.low?F(s.low):'-'}</div></div>
+        <div class="sd-cell"><div class="sd-label">시가</div><div class="sd-val">${s.open?F(s.open):'-'}</div></div>
+        <div class="sd-cell"><div class="sd-label">시장</div><div class="sd-val">${s.market||'-'}</div></div>
+      </div>`;
+
+  // 보유 종목인 경우 보유 상세 표시
+  if(hd){
+    const evalAmt=cur*hd.q, investAmt=hd.ap*hd.q;
+    const pl=evalAmt-investAmt, plP=(cur-hd.ap)/hd.ap*100;
+    const plUp=pl>=0;
+    html+=`<div class="sd-section">
+      <div class="sd-sec-title">내 보유 현황</div>
+      <div class="sd-sec-card">
+        <div class="sd-row"><span class="sd-rl">보유수량</span><span class="sd-rv">${F(hd.q)}주</span></div>
+        <div class="sd-row"><span class="sd-rl">매입평균가</span><span class="sd-rv">${F(hd.ap)}원</span></div>
+        <div class="sd-row"><span class="sd-rl">투자금액</span><span class="sd-rv">${F(investAmt)}원</span></div>
+        <div class="sd-row"><span class="sd-rl">평가금액</span><span class="sd-rv">${F(evalAmt)}원</span></div>
+        <div class="sd-row"><span class="sd-rl">평가손익</span><span class="sd-rv ${plUp?'up':'dn'}">${plUp?'+':''}${F(Math.round(pl))}원</span></div>
+        <div class="sd-row"><span class="sd-rl">수익률</span><span class="sd-rv ${plUp?'up':'dn'}">${plUp?'+':''}${plP.toFixed(2)}%</span></div>
+      </div>
+    </div>`;
+  }
+
+  html+=`</div></div>`;
+  container.innerHTML=html;
+}
+
+async function fetchSdChart(code,period){
+  sdChartLoading=true;sdChartPeriod=period;
+  // 차트영역만 업데이트
+  const area=document.getElementById('sdChartArea');
+  if(area)area.innerHTML='<div class="cl"><div class="spinner" style="width:18px;height:18px"></div></div>';
+  try{
+    const res=await fetch(`/api/chart?symbol=${code}&period=${period}`);
+    const json=await res.json();
+    if(json.success)sdChartData=json.data;else sdChartData=[];
+  }catch(e){sdChartData=[]}
+  sdChartLoading=false;
+  // 차트 다시 그리기
+  const area2=document.getElementById('sdChartArea');
+  if(area2){
+    area2.innerHTML='<canvas id="sdChart"></canvas>';
+    // 탭 버튼 상태 업데이트
+    const btns=document.querySelectorAll('.sd-ct button');
+    btns.forEach(b=>{
+      const p=b.textContent==='1일'?'day':b.textContent==='1주'?'1w':b.textContent==='1개월'?'1m':b.textContent==='3개월'?'3m':'1y';
+      b.className=p===sdChartPeriod?'on':'';
+    });
+    setTimeout(drawSdChart,30);
+  }
+}
+
+function switchSdChart(p){if(sdCode)fetchSdChart(sdCode,p)}
+
+function drawSdChart(){
+  const canvas=document.getElementById('sdChart');
+  if(!canvas||sdChartData.length===0)return;
+  const ctx=canvas.getContext('2d');
+  const dpr=window.devicePixelRatio||1;
+  const rect=canvas.parentElement.getBoundingClientRect();
+  canvas.width=rect.width*dpr;canvas.height=rect.height*dpr;
+  canvas.style.width=rect.width+'px';canvas.style.height=rect.height+'px';
+  ctx.scale(dpr,dpr);
+  const W=rect.width,H=rect.height;
+  const pad={t:14,r:12,b:24,l:12};
+  const cW=W-pad.l-pad.r,cH=H-pad.t-pad.b;
+  const closes=sdChartData.map(d=>d.close);
+  const minP=Math.min(...closes),maxP=Math.max(...closes);
+  const range=maxP-minP||1;
+  ctx.clearRect(0,0,W,H);
+  const isUp=closes[closes.length-1]>=closes[0];
+  const lineColor=isUp?'#ff4d5e':'#3b9eff';
+  // Grid
+  ctx.strokeStyle='rgba(42,63,110,.4)';ctx.lineWidth=.5;
+  for(let i=0;i<4;i++){const y=pad.t+cH*i/3;ctx.beginPath();ctx.moveTo(pad.l,y);ctx.lineTo(W-pad.r,y);ctx.stroke()}
+  // Fill
+  const grad=ctx.createLinearGradient(0,pad.t,0,H-pad.b);
+  grad.addColorStop(0,isUp?'rgba(255,77,94,.15)':'rgba(59,158,255,.15)');
+  grad.addColorStop(1,'rgba(22,32,64,0)');
+  ctx.beginPath();
+  for(let i=0;i<closes.length;i++){const x=pad.l+(i/(closes.length-1))*cW,y=pad.t+(1-(closes[i]-minP)/range)*cH;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+  ctx.lineTo(pad.l+cW,H-pad.b);ctx.lineTo(pad.l,H-pad.b);ctx.closePath();ctx.fillStyle=grad;ctx.fill();
+  // Line
+  ctx.beginPath();
+  for(let i=0;i<closes.length;i++){const x=pad.l+(i/(closes.length-1))*cW,y=pad.t+(1-(closes[i]-minP)/range)*cH;i===0?ctx.moveTo(x,y):ctx.lineTo(x,y)}
+  ctx.strokeStyle=lineColor;ctx.lineWidth=1.8;ctx.lineJoin='round';ctx.lineCap='round';ctx.stroke();
+  // End dot
+  const lx=pad.l+cW,ly=pad.t+(1-(closes[closes.length-1]-minP)/range)*cH;
+  ctx.beginPath();ctx.arc(lx,ly,3,0,Math.PI*2);ctx.fillStyle=lineColor;ctx.fill();
+  ctx.beginPath();ctx.arc(lx,ly,5.5,0,Math.PI*2);ctx.fillStyle=isUp?'rgba(255,77,94,.2)':'rgba(59,158,255,.2)';ctx.fill();
+  // Labels
+  ctx.fillStyle='#5a6e8a';ctx.font='500 10px -apple-system,sans-serif';ctx.textAlign='right';
+  ctx.fillText(F(maxP),W-pad.r,pad.t+4);ctx.fillText(F(minP),W-pad.r,H-pad.b-2);
+  ctx.textAlign='center';
+  const first=sdChartData[0].date.trim(),last=sdChartData[sdChartData.length-1].date.trim();
+  let f1,f2;
+  if(sdChartPeriod==='day'){f1=first.length>=12?first.substring(8,10)+':'+first.substring(10,12):first;f2=last.length>=12?last.substring(8,10)+':'+last.substring(10,12):last}
+  else{f1=first.substring(4,6)+'.'+first.substring(6,8);f2=last.substring(4,6)+'.'+last.substring(6,8)}
+  ctx.fillText(f1,pad.l+30,H-6);ctx.fillText(f2,W-pad.r-30,H-6);
+}
+
 /* ===== ACTIONS ===== */
 function T(t){st.tab=t;if(t==='news'&&!newsFetched)fetchNews();R()}
-function goOrder(c){}
+function goOrder(c){openStockDetail(c)}
 function resetA(){st.hold=[];st.savings=[];saveHoldings();saveSavings();toast('초기화 완료')}
 
 /* ===== 서비스 워커 해제 + 캐시 삭제 ===== */
