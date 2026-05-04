@@ -2,6 +2,7 @@
   "outputDirectory": "public",
   "rewrites": [
     { "source": "/api/prices", "destination": "/api/prices" },
-    { "source": "/api/chart", "destination": "/api/chart" }
+    { "source": "/api/chart", "destination": "/api/chart" },
+    { "source": "/api/news", "destination": "/api/news" }
   ]
 }
