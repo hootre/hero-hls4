@@ -369,6 +369,7 @@ function switchChart(p){if(st.sel)fetchChart(st.sel,p)}
 
 /* ===== RENDER ===== */
 function R(){
+  if(st.showSavModal)return;
   const a=document.getElementById('app');
   if(S.length===0&&!serverError)return;
   if(S.length===0&&serverError){
@@ -492,23 +493,18 @@ function renderBalance(){
 
   // 적금 섹션
   h+=`<div class="bal-sec saving">
-    <div class="bs-hd"><span class="bs-icon">적금 목록</span><span class="bs-total">${F(totalSav+totalInterest)}원</span></div>`;
+    <div class="bs-hd"><span class="bs-icon">적금 목록</span><span class="bs-total">${F(totalSav)}원</span></div>`;
   if(st.savings.length===0){
     h+='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">등록된 적금이 없습니다</div>';
   }else{
     st.savings.forEach((s,i)=>{
-      let days=Math.floor((Date.now()-s.startDate)/(1000*60*60*24));
-      let interest=Math.round(s.amount*s.rate/100/365*days);
-      let endDate=new Date(s.startDate+s.months*30*24*60*60*1000);
-      let remaining=Math.max(0,Math.ceil((endDate.getTime()-Date.now())/(1000*60*60*24)));
       h+=`<div class="sav-item">
         <div class="sav-l">
           <div class="sav-name">${s.name}</div>
-          <div class="sav-sub"><span class="sav-rate">연 ${s.rate}%</span><span>${s.months}개월 · 잔여 ${remaining}일</span></div>
         </div>
-        <div class="sav-r">
+        <div class="sav-r" style="display:flex;align-items:center;gap:10px">
           <div class="sav-amt">${F(s.amount)}원</div>
-          <div class="sav-int">+${F(interest)}원</div>
+          <span onclick="delSaving(${i})" style="color:var(--t3);font-size:18px;cursor:pointer;padding:4px">✕</span>
         </div>
       </div>`;
     });
@@ -520,47 +516,46 @@ function renderBalance(){
   h+=`<div class="bal-sec">
     <div class="bs-hd"><span class="bs-icon" style="color:var(--t1)">총 자산 합계</span></div>
     <div class="sr"><label>주식 평가금액</label><span class="srv">${F(totalStock)}원</span></div>
-    <div class="sr"><label>적금 원금</label><span class="srv">${F(totalSav)}원</span></div>
-    <div class="sr"><label>적금 이자 (예상)</label><span class="srv" style="color:#3fb950">+${F(totalInterest)}원</span></div>
-    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px">${F(totalStock+totalSav+totalInterest)}원</span></div>
+    <div class="sr"><label>적금 총액</label><span class="srv">${F(totalSav)}원</span></div>
+    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px">${F(totalStock+totalSav)}원</span></div>
   </div>`;
 
   h+='</div>';
-
-  // Savings modal
-  if(st.showSavModal){
-    h+=`<div class="modal-bg" onclick="closeSavModal()">
-      <div class="modal" onclick="event.stopPropagation()">
-        <div class="m-title">적금 추가</div>
-        <div class="m-row"><label>적금명</label><input type="text" id="savName" placeholder="예: 청년희망적금"></div>
-        <div class="m-row"><label>납입 금액 (원)</label><input type="number" id="savAmount" placeholder="100000"></div>
-        <div class="m-row"><label>연이율 (%)</label><input type="number" id="savRate" placeholder="3.5" step="0.1"></div>
-        <div class="m-row"><label>가입 기간 (개월)</label>
-          <select id="savMonths"><option value="6">6개월</option><option value="12" selected>12개월</option><option value="24">24개월</option><option value="36">36개월</option></select>
-        </div>
-        <div class="m-btns">
-          <button class="m-cancel" onclick="closeSavModal()">취소</button>
-          <button class="m-ok" onclick="addSaving()">추가</button>
-        </div>
-      </div>
-    </div>`;
-  }
-
   return h;
 }
 
-function openSavModal(){st.showSavModal=true;R()}
-function closeSavModal(){st.showSavModal=false;R()}
+function openSavModal(){
+  st.showSavModal=true;
+  // 모달은 R() 밖에서 직접 DOM에 삽입
+  const d=document.createElement('div');
+  d.id='savModal';
+  d.innerHTML=`<div class="modal-bg" onclick="closeSavModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="m-title">적금 추가</div>
+      <div class="m-row"><label>적금명</label><input type="text" id="savName" placeholder="예: 청년희망적금"></div>
+      <div class="m-row"><label>금액 (원)</label><input type="number" id="savAmount" placeholder="1,000,000"></div>
+      <div class="m-btns">
+        <button class="m-cancel" onclick="closeSavModal()">취소</button>
+        <button class="m-ok" onclick="addSaving()">추가</button>
+      </div>
+    </div>
+  </div>`;
+  document.body.appendChild(d);
+  setTimeout(()=>{const el=document.getElementById('savName');if(el)el.focus()},100);
+}
+function closeSavModal(){
+  st.showSavModal=false;
+  const m=document.getElementById('savModal');
+  if(m)m.remove();
+  R();
+}
 function addSaving(){
   const name=document.getElementById('savName').value.trim();
   const amount=parseInt(document.getElementById('savAmount').value)||0;
-  const rate=parseFloat(document.getElementById('savRate').value)||0;
-  const months=parseInt(document.getElementById('savMonths').value)||12;
   if(!name){toast('적금명을 입력해주세요');return}
   if(amount<=0){toast('금액을 입력해주세요');return}
-  if(rate<=0){toast('이율을 입력해주세요');return}
-  st.savings.push({name,amount,rate,months,startDate:Date.now()});
-  saveSavings();st.showSavModal=false;toast(`${name} 적금 추가 완료`);R();
+  st.savings.push({name,amount,startDate:Date.now()});
+  saveSavings();closeSavModal();toast(`${name} 추가 완료`);
 }
 function delSaving(i){st.savings.splice(i,1);saveSavings();toast('적금 삭제 완료');R()}
 
