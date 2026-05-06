@@ -23,6 +23,7 @@
   "rewrites": [
     { "source": "/api/prices", "destination": "/api/prices" },
     { "source": "/api/chart", "destination": "/api/chart" },
-    { "source": "/api/news", "destination": "/api/news" }
+    { "source": "/api/news", "destination": "/api/news" },
+    { "source": "/api/indices", "destination": "/api/indices" }
   ]
 }
