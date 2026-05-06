@@ -103,9 +103,9 @@ input[type=number]{-moz-appearance:textfield}
 .g4 .g4v{font-size:13px;font-weight:700;letter-spacing:-.3px}
 .g4 .g4v.up{color:var(--up)}.g4 .g4v.dn{color:var(--dn)}
 
-.sec-hd{display:flex;justify-content:space-between;align-items:center;padding:20px 20px 12px}
-.sec-hd .sh-t{font-size:15px;font-weight:700}
-.sec-hd .sh-cnt{font-size:12px;color:var(--t3);background:var(--surface);padding:3px 10px;border-radius:12px;font-weight:600}
+.sec-hd{display:flex;justify-content:space-between;align-items:center;padding:14px 20px 8px}
+.sec-hd .sh-t{font-size:14px;font-weight:700}
+.sec-hd .sh-cnt{font-size:11px;color:var(--t3);background:var(--surface);padding:2px 9px;border-radius:10px;font-weight:600}
 
 /* Stock item (shared) */
 .si{display:flex;align-items:center;padding:14px 20px;cursor:pointer;transition:background .1s;border-bottom:1px solid var(--border-light)}
@@ -256,39 +256,71 @@ input[type=number]{-moz-appearance:textfield}
 .splash-ver{position:absolute;bottom:40px;font-size:11px;color:var(--t3)}
 
 /* ===== QUICK MENU ===== */
-.qm{display:flex;justify-content:space-around;padding:14px 20px 6px}
-.qm-item{display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer}
-.qm-item:active{opacity:.7}
-.qm-icon{width:44px;height:44px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:18px}
+.qm{display:flex;justify-content:space-around;padding:12px 16px 10px}
+.qm-item{display:flex;flex-direction:column;align-items:center;gap:5px;cursor:pointer}
+.qm-item:active{opacity:.7;transform:scale(.95)}
+.qm-icon{width:42px;height:42px;border-radius:13px;display:flex;align-items:center;justify-content:center;font-size:17px}
 .qm-icon.c1{background:rgba(255,90,106,.12)}
 .qm-icon.c2{background:rgba(77,176,255,.12)}
 .qm-icon.c3{background:rgba(63,185,80,.12)}
 .qm-icon.c4{background:rgba(168,133,255,.12)}
-.qm-label{font-size:11px;color:var(--t2);font-weight:500}
+.qm-label{font-size:10px;color:var(--t2);font-weight:500}
 
 /* ===== HOT STOCKS ===== */
-.hot-scroll{display:flex;gap:10px;padding:0 20px 12px;overflow-x:auto;-webkit-overflow-scrolling:touch}
+.hot-scroll{display:flex;gap:8px;padding:0 20px 10px;overflow-x:auto;-webkit-overflow-scrolling:touch}
 .hot-scroll::-webkit-scrollbar{display:none}
-.hot-card{flex-shrink:0;width:130px;background:var(--surface);border-radius:var(--radius-sm);padding:14px;border:1px solid var(--border-light);cursor:pointer;transition:all .15s}
+.hot-card{flex-shrink:0;width:120px;background:var(--surface);border-radius:var(--radius-xs);padding:12px;border:1px solid var(--border-light);cursor:pointer;transition:all .15s}
 .hot-card:active{background:var(--surface2);transform:scale(.97)}
-.hot-card .hc-name{font-size:12px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:6px}
-.hot-card .hc-price{font-size:13px;font-weight:700;color:var(--t1);margin-bottom:3px}
-.hot-card .hc-chg{font-size:11px;font-weight:700}
+.hot-card .hc-name{font-size:11px;font-weight:700;color:var(--t1);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:5px}
+.hot-card .hc-price{font-size:12px;font-weight:700;color:var(--t1);margin-bottom:2px}
+.hot-card .hc-chg{font-size:10px;font-weight:700}
 .hot-card .hc-chg.up{color:var(--up)}.hot-card .hc-chg.dn{color:var(--dn)}
 
 /* ===== BANNER ===== */
-.banner{margin:6px 20px 14px;background:linear-gradient(135deg,#2a4a7f,#3d6baa);border-radius:var(--radius-sm);padding:16px 18px;position:relative;overflow:hidden;cursor:pointer}
+.banner{margin:4px 20px 10px;background:linear-gradient(135deg,#2a4a7f,#3d6baa);border-radius:var(--radius-xs);padding:14px 16px;position:relative;overflow:hidden;cursor:pointer}
 .banner:active{opacity:.9}
-.banner .bn-title{font-size:14px;font-weight:700;color:#fff;margin-bottom:3px}
-.banner .bn-desc{font-size:11px;color:rgba(255,255,255,.7);font-weight:500}
-.banner .bn-badge{position:absolute;top:12px;right:14px;font-size:9px;background:rgba(255,255,255,.2);color:#fff;padding:3px 8px;border-radius:10px;font-weight:600}
-.banner::after{content:'';position:absolute;right:-20px;bottom:-20px;width:80px;height:80px;border-radius:50%;background:rgba(255,255,255,.06)}
+.banner .bn-title{font-size:13px;font-weight:700;color:#fff;margin-bottom:2px}
+.banner .bn-desc{font-size:10px;color:rgba(255,255,255,.7);font-weight:500}
+.banner .bn-badge{position:absolute;top:10px;right:12px;font-size:8px;background:rgba(255,255,255,.2);color:#fff;padding:2px 7px;border-radius:8px;font-weight:600}
+.banner::after{content:'';position:absolute;right:-20px;bottom:-20px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.06)}
 
 /* ===== MARKET HOURS ===== */
-.mkt-hours{display:flex;align-items:center;gap:6px;padding:2px 20px 8px;font-size:11px;color:var(--t3)}
+.mkt-hours{display:flex;align-items:center;gap:6px;padding:4px 20px 2px;font-size:10px;color:var(--t3)}
 .mkt-hours .mh-dot{width:5px;height:5px;border-radius:50%}
 .mkt-hours .mh-dot.open{background:#3fb950;box-shadow:0 0 4px rgba(63,185,80,.5)}
 .mkt-hours .mh-dot.closed{background:var(--t3)}
+
+/* ===== SUB PAGES ===== */
+.sub-page{padding:20px}
+.sub-back{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:600;color:var(--t2);cursor:pointer;margin-bottom:16px}
+.sub-back:active{opacity:.7}
+.sub-back svg{width:18px;height:18px;stroke:var(--t2);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.sub-title{font-size:18px;font-weight:800;color:var(--t1);margin-bottom:16px;letter-spacing:-.5px}
+.sub-card{background:var(--surface);border-radius:var(--radius-sm);border:1px solid var(--border-light);overflow:hidden;margin-bottom:12px}
+.sub-card .sc-hd{padding:14px 16px;font-size:13px;font-weight:700;color:var(--t2);border-bottom:1px solid var(--border-light);display:flex;align-items:center;gap:8px}
+.sub-card .sc-hd::before{content:'';width:3px;height:11px;border-radius:2px;background:var(--accent)}
+.sub-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;border-bottom:1px solid var(--border-light)}
+.sub-row:last-child{border-bottom:none}
+.sub-row .sr-l{font-size:12px;color:var(--t3)}
+.sub-row .sr-v{font-size:13px;font-weight:700;color:var(--t1)}
+.sub-row .sr-v.up{color:var(--up)}.sub-row .sr-v.dn{color:var(--dn)}.sub-row .sr-v.green{color:#3fb950}
+.sub-empty{text-align:center;padding:40px 20px;color:var(--t3);font-size:13px}
+.sub-chart-placeholder{height:140px;background:var(--surface2);border-radius:var(--radius-xs);margin:12px 16px;display:flex;align-items:center;justify-content:center;color:var(--t3);font-size:12px}
+.sub-list-item{display:flex;justify-content:space-between;align-items:center;padding:13px 16px;border-bottom:1px solid var(--border-light)}
+.sub-list-item:last-child{border-bottom:none}
+.sub-list-item .sli-l{display:flex;flex-direction:column;gap:2px}
+.sub-list-item .sli-name{font-size:13px;font-weight:600;color:var(--t1)}
+.sub-list-item .sli-desc{font-size:11px;color:var(--t3)}
+.sub-list-item .sli-r{font-size:13px;font-weight:700;color:var(--t1)}
+.sub-list-item .sli-r.green{color:#3fb950}
+
+/* AI Recommendation styles */
+.ai-score{display:flex;align-items:center;gap:10px;padding:14px 16px;border-bottom:1px solid var(--border-light)}
+.ai-score:last-child{border-bottom:none}
+.ai-score .ai-bar{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden}
+.ai-score .ai-bar-fill{height:100%;border-radius:3px}
+.ai-score .ai-name{font-size:12px;font-weight:600;color:var(--t1);width:70px;flex-shrink:0}
+.ai-score .ai-pct{font-size:12px;font-weight:700;width:36px;text-align:right;flex-shrink:0}
 
 .err-page{padding:60px 24px;text-align:center}
 .err-page .err-icon{font-size:40px;margin-bottom:20px;opacity:.5}
@@ -611,14 +643,19 @@ function R(){
   else if(st.tab==='news')h+=renderNews();
   else if(st.tab==='market')h+=renderMarket();
   else if(st.tab==='settings')h+=renderSettings();
+  else if(st.tab==='sub_deposit')h+=renderSubDeposit();
+  else if(st.tab==='sub_analysis')h+=renderSubAnalysis();
+  else if(st.tab==='sub_products')h+=renderSubProducts();
+  else if(st.tab==='sub_ai')h+=renderSubAI();
   h+='</div>';
 
   // Toast
   h+=`<div class="toast ${st.toast?'show':''}">${st.toast}</div>`;
 
   // Bottom nav
+  const isHome=st.tab==='home'||st.tab.startsWith('sub_');
   h+=`<div class="bn">
-    <button class="${st.tab==='home'?'on':''}" onclick="T('home')">${IC.home}<span class="bl">홈</span></button>
+    <button class="${isHome?'on':''}" onclick="T('home')">${IC.home}<span class="bl">홈</span></button>
     <button class="${st.tab==='balance'?'on':''}" onclick="T('balance')">${IC.balance}<span class="bl">잔고</span></button>
     <button class="${st.tab==='news'?'on':''}" onclick="T('news')">${IC.news}<span class="bl">뉴스</span></button>
     <button class="${st.tab==='market'?'on':''}" onclick="T('market')">${IC.market}<span class="bl">종목</span></button>
@@ -647,10 +684,10 @@ function renderHome(){
 
   // 퀵메뉴
   h+=`<div class="qm">
-    <div class="qm-item" onclick="toast('준비 중인 서비스입니다')"><div class="qm-icon c1">💰</div><span class="qm-label">입출금</span></div>
-    <div class="qm-item" onclick="toast('준비 중인 서비스입니다')"><div class="qm-icon c2">📊</div><span class="qm-label">투자분석</span></div>
-    <div class="qm-item" onclick="toast('준비 중인 서비스입니다')"><div class="qm-icon c3">🏦</div><span class="qm-label">금융상품</span></div>
-    <div class="qm-item" onclick="toast('준비 중인 서비스입니다')"><div class="qm-icon c4">⚡</div><span class="qm-label">AI추천</span></div>
+    <div class="qm-item" onclick="T('sub_deposit')"><div class="qm-icon c1">💰</div><span class="qm-label">입출금</span></div>
+    <div class="qm-item" onclick="T('sub_analysis')"><div class="qm-icon c2">📊</div><span class="qm-label">투자분석</span></div>
+    <div class="qm-item" onclick="T('sub_products')"><div class="qm-icon c3">🏦</div><span class="qm-label">금융상품</span></div>
+    <div class="qm-item" onclick="T('sub_ai')"><div class="qm-icon c4">⚡</div><span class="qm-label">AI추천</span></div>
   </div>`;
 
   h+=`<div class="grid4">
@@ -856,6 +893,128 @@ function renderNews(){
 }
 
 /* ===== SETTINGS ===== */
+/* ===== SUB PAGES ===== */
+function subBack(){return `<div class="sub-back" onclick="T('home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>뒤로</div>`}
+
+function renderSubDeposit(){
+  const totalAsset=te()+st.savings.reduce((a,s)=>a+s.amount,0);
+  return `<div class="sub-page">${subBack()}
+    <div class="sub-title">입출금</div>
+    <div class="sub-card"><div class="sc-hd">내 계좌</div>
+      <div class="sub-row"><span class="sr-l">영웅문 증권 위탁계좌</span><span class="sr-v">${F(totalAsset)}원</span></div>
+      <div class="sub-row"><span class="sr-l">예수금 (출금가능)</span><span class="sr-v">${F(Math.round(totalAsset*0.05))}원</span></div>
+      <div class="sub-row"><span class="sr-l">D+2 예수금</span><span class="sr-v">${F(Math.round(totalAsset*0.02))}원</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">최근 입출금 내역</div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">계좌 입금</span><span class="sli-desc">2026.05.04 · 신한은행</span></div><span class="sli-r green">+5,000,000원</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">주식 매수</span><span class="sli-desc">2026.05.02 · 삼성전자</span></div><span class="sli-r">-1,816,000원</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">계좌 입금</span><span class="sli-desc">2026.04.28 · 국민은행</span></div><span class="sli-r green">+3,000,000원</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">주식 매수</span><span class="sli-desc">2026.04.25 · SK하이닉스</span></div><span class="sli-r">-7,000,000원</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">배당금 입금</span><span class="sli-desc">2026.04.20 · 삼성전자</span></div><span class="sli-r green">+48,000원</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">연결 계좌</div>
+      <div class="sub-row"><span class="sr-l">신한은행 110-***-****78</span><span class="sr-v" style="color:var(--accent);font-size:11px">주거래</span></div>
+      <div class="sub-row"><span class="sr-l">국민은행 940-***-****12</span><span class="sr-v" style="color:var(--t3);font-size:11px">보조</span></div>
+    </div>
+  </div>`;
+}
+
+function renderSubAnalysis(){
+  const v=pnl(),p=pnlP();
+  const topStock=st.hold.length>0?st.hold.reduce((best,h)=>{
+    const s=S.find(x=>x.code===h.c);const cur=s?s.price:h.ap;
+    const pl=(cur-h.ap)*h.q;return pl>best.pl?{name:h.n,pl}:best;
+  },{name:'-',pl:-Infinity}):null;
+  const worstStock=st.hold.length>0?st.hold.reduce((worst,h)=>{
+    const s=S.find(x=>x.code===h.c);const cur=s?s.price:h.ap;
+    const pl=(cur-h.ap)*h.q;return pl<worst.pl?{name:h.n,pl}:worst;
+  },{name:'-',pl:Infinity}):null;
+
+  return `<div class="sub-page">${subBack()}
+    <div class="sub-title">투자분석</div>
+    <div class="sub-card"><div class="sc-hd">수익률 추이</div>
+      <div class="sub-chart-placeholder">📈 최근 30일 수익률 차트</div>
+      <div class="sub-row"><span class="sr-l">오늘 수익률</span><span class="sr-v ${p>=0?'up':'dn'}">${p>=0?'+':''}${p.toFixed(2)}%</span></div>
+      <div class="sub-row"><span class="sr-l">이번 주</span><span class="sr-v up">+3.42%</span></div>
+      <div class="sub-row"><span class="sr-l">이번 달</span><span class="sr-v up">+8.15%</span></div>
+      <div class="sub-row"><span class="sr-l">올해 누적</span><span class="sr-v up">+24.7%</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">포트폴리오 분석</div>
+      <div class="sub-row"><span class="sr-l">총 투자금액</span><span class="sr-v">${F(tp())}원</span></div>
+      <div class="sub-row"><span class="sr-l">총 평가손익</span><span class="sr-v ${v>=0?'up':'dn'}">${v>=0?'+':''}${F(Math.round(v))}원</span></div>
+      <div class="sub-row"><span class="sr-l">최고 수익 종목</span><span class="sr-v up">${topStock?topStock.name:'-'}</span></div>
+      <div class="sub-row"><span class="sr-l">최저 수익 종목</span><span class="sr-v dn">${worstStock?worstStock.name:'-'}</span></div>
+      <div class="sub-row"><span class="sr-l">보유 종목 수</span><span class="sr-v">${st.hold.length}개</span></div>
+      <div class="sub-row"><span class="sr-l">매매 횟수 (이번달)</span><span class="sr-v">${transactions.filter(t=>t.date>Date.now()-30*86400000).length}회</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">투자 성향 리포트</div>
+      <div class="sub-row"><span class="sr-l">투자 성향</span><span class="sr-v" style="color:var(--accent)">성장주 집중형</span></div>
+      <div class="sub-row"><span class="sr-l">리스크 등급</span><span class="sr-v" style="color:#f0a030">중위험</span></div>
+      <div class="sub-row"><span class="sr-l">분산투자 점수</span><span class="sr-v">62 / 100</span></div>
+    </div>
+  </div>`;
+}
+
+function renderSubProducts(){
+  return `<div class="sub-page">${subBack()}
+    <div class="sub-title">금융상품</div>
+    <div class="sub-card"><div class="sc-hd">추천 금융상품</div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">영웅문 CMA</span><span class="sli-desc">연 3.2% · 수시입출금</span></div><span class="sli-r green">연 3.2%</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">코스피200 ETF</span><span class="sli-desc">지수 추종 · 낮은 수수료</span></div><span class="sli-r green">+12.4%</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">미국 S&P500 ETF</span><span class="sli-desc">해외 분산투자 · 환헤지</span></div><span class="sli-r green">+18.2%</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">단기채권 펀드</span><span class="sli-desc">안정형 · 월배당</span></div><span class="sli-r green">연 4.1%</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">적금/예금</div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">청년희망적금</span><span class="sli-desc">12개월 · 우대금리 포함</span></div><span class="sli-r green">연 6.0%</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">자유적금 플러스</span><span class="sli-desc">6~36개월 · 자유납입</span></div><span class="sli-r green">연 4.5%</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">정기예금 스페셜</span><span class="sli-desc">12개월 · 만기일시지급</span></div><span class="sli-r green">연 3.8%</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">연금/절세</div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">IRP 퇴직연금</span><span class="sli-desc">세액공제 최대 900만원</span></div><span class="sli-r" style="color:var(--accent)">절세</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">연금저축 펀드</span><span class="sli-desc">노후 대비 · 세액공제</span></div><span class="sli-r" style="color:var(--accent)">절세</span></div>
+      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">ISA 만능통장</span><span class="sli-desc">비과세 한도 400만원</span></div><span class="sli-r" style="color:var(--accent)">비과세</span></div>
+    </div>
+  </div>`;
+}
+
+function renderSubAI(){
+  // AI 추천 종목 - 등락률/거래량 기반 더미 스코어
+  const scored=S.slice(0,10).map(s=>({
+    name:s.name,code:s.code,price:s.price,
+    score:Math.min(98,Math.max(35,Math.round(50+s.changeRate*8+Math.random()*15)))
+  })).sort((a,b)=>b.score-a.score);
+
+  let h=`<div class="sub-page">${subBack()}
+    <div class="sub-title">AI 종목추천</div>
+    <div class="sub-card"><div class="sc-hd">AI 투자 분석 요약</div>
+      <div class="sub-row"><span class="sr-l">분석 모델</span><span class="sr-v">HeroAI v3.2</span></div>
+      <div class="sub-row"><span class="sr-l">분석 기준일</span><span class="sr-v">${new Date().toLocaleDateString('ko-KR')}</span></div>
+      <div class="sub-row"><span class="sr-l">시장 전망</span><span class="sr-v up">강세</span></div>
+      <div class="sub-row"><span class="sr-l">추천 전략</span><span class="sr-v" style="color:var(--accent)">성장주 비중 확대</span></div>
+    </div>
+    <div class="sub-card"><div class="sc-hd">AI 추천 TOP 종목</div>`;
+  scored.forEach(s=>{
+    const color=s.score>=75?'#3fb950':s.score>=50?'#f0a030':'var(--up)';
+    h+=`<div class="ai-score" onclick="goOrder('${s.code}')">
+      <span class="ai-name">${s.name}</span>
+      <div class="ai-bar"><div class="ai-bar-fill" style="width:${s.score}%;background:${color}"></div></div>
+      <span class="ai-pct" style="color:${color}">${s.score}점</span>
+    </div>`;
+  });
+  h+=`</div>
+    <div class="sub-card"><div class="sc-hd">포트폴리오 리밸런싱 제안</div>
+      <div class="sub-row"><span class="sr-l">반도체 비중</span><span class="sr-v">현재 65% → 50% 권장</span></div>
+      <div class="sub-row"><span class="sr-l">현금 비중</span><span class="sr-v">5% → 15% 권장</span></div>
+      <div class="sub-row"><span class="sr-l">해외주식 추가</span><span class="sr-v" style="color:var(--accent)">추천</span></div>
+    </div>
+    <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3);line-height:1.6">
+      * AI 추천은 참고용이며 투자 판단은 본인에게 있습니다<br>
+      * 과거 수익률이 미래 수익을 보장하지 않습니다
+    </div>
+  </div>`;
+  return h;
+}
+
 function renderSettings(){
   let v=pnl(),p=pnlP();
   let totalSav=st.savings.reduce((a,s)=>a+s.amount,0);
