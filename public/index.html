@@ -38,7 +38,7 @@ input[type=number]{-moz-appearance:textfield}
 
 /* ===== INDEX BAR ===== */
 .idx-bar{
-  display:flex;gap:0;overflow-x:auto;padding:7px 0;
+  display:flex;gap:0;overflow-x:auto;padding:5px 0;
   background:var(--surface);border-bottom:1px solid var(--border-light);
   flex-shrink:0;-webkit-overflow-scrolling:touch;
 }
@@ -55,10 +55,10 @@ input[type=number]{-moz-appearance:textfield}
 /* ===== HEADER ===== */
 .hdr{
   padding-left:20px;padding-right:20px;
-  padding-top:max(env(safe-area-inset-top,0px),10px);
+  padding-top:max(env(safe-area-inset-top,0px),8px);
   display:flex;justify-content:space-between;align-items:center;
   background:var(--bg);z-index:20;position:relative;
-  height:52px;flex-shrink:0;
+  height:48px;flex-shrink:0;
 }
 .hdr .logo{display:flex;align-items:center;gap:8px}
 .hdr .logo img{height:26px;object-fit:contain;filter:brightness(1.1)}
@@ -68,19 +68,9 @@ input[type=number]{-moz-appearance:textfield}
 .hdr-r .ib:active{transform:scale(.9);background:var(--surface2)}
 .hdr-r .ib svg{width:17px;height:17px;stroke:var(--t2);fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 
-/* ===== TOP TABS ===== */
-.tabs{display:flex;padding:6px 20px 4px;gap:4px;background:var(--bg);z-index:10;flex-shrink:0}
-.tabs button{
-  padding:7px 14px;border-radius:18px;border:none;
-  font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;
-  transition:all .2s;white-space:nowrap;
-}
-.tabs button.on{background:#e6edf3;color:#0d1117;box-shadow:0 2px 8px rgba(230,237,243,.12)}
-.tabs button:not(.on){background:transparent;color:var(--t2)}
-.tabs button:not(.on):active{background:var(--surface)}
 
 /* ===== STATUS ===== */
-.status{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 4px;font-size:10px;color:var(--t3);flex-shrink:0}
+.status{display:flex;align-items:center;justify-content:space-between;padding:6px 20px 3px;font-size:10px;color:var(--t3);flex-shrink:0}
 .status .lv{display:flex;align-items:center;gap:5px}
 .dot{width:5px;height:5px;border-radius:50%;animation:pulse 2s infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
@@ -254,6 +244,7 @@ input[type=number]{-moz-appearance:textfield}
 .splash-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),#a5d8ff);border-radius:2px;transition:width .4s ease;width:0%}
 .splash-ver{position:absolute;bottom:40px;font-size:11px;color:var(--t3)}
 
+
 /* ===== QUICK MENU ===== */
 .qm{display:flex;justify-content:space-around;padding:10px 20px 8px}
 .qm-item{display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer}
@@ -283,11 +274,6 @@ input[type=number]{-moz-appearance:textfield}
 .banner .bn-badge{position:absolute;top:10px;right:12px;font-size:8px;background:rgba(255,255,255,.2);color:#fff;padding:2px 7px;border-radius:8px;font-weight:600}
 .banner::after{content:'';position:absolute;right:-20px;bottom:-20px;width:70px;height:70px;border-radius:50%;background:rgba(255,255,255,.06)}
 
-/* ===== MARKET HOURS ===== */
-.mkt-hours{display:flex;align-items:center;gap:6px;padding:3px 20px 1px;font-size:10px;color:var(--t3)}
-.mkt-hours .mh-dot{width:5px;height:5px;border-radius:50%}
-.mkt-hours .mh-dot.open{background:#3fb950;box-shadow:0 0 4px rgba(63,185,80,.5)}
-.mkt-hours .mh-dot.closed{background:var(--t3)}
 
 /* ===== SUB PAGES ===== */
 .sub-page{padding:16px 20px}
@@ -624,16 +610,9 @@ function R(){
     h+='</div>';
   }
 
-  // Tabs
-  h+=`<div class="tabs">
-    <button class="${st.tab==='home'?'on':''}" onclick="T('home')">내 자산</button>
-    <button class="${st.tab==='balance'?'on':''}" onclick="T('balance')">잔고</button>
-    <button class="${st.tab==='news'?'on':''}" onclick="T('news')">뉴스</button>
-    <button class="${st.tab==='market'?'on':''}" onclick="T('market')">종목</button>
-  </div>`;
-
-  // Status
-  h+=`<div class="status"><div class="lv"><span class="dot" style="background:${isLive?'#3fb950':'#ff4757'}"></span>${isLive?'실시간':'연결 끊김'}</div><div>${timeAgo()}</div></div>`;
+  // Status (실시간 + 장 상태 한 줄)
+  const mktSt=getMarketStatus();
+  h+=`<div class="status"><div class="lv"><span class="dot" style="background:${isLive?'#3fb950':'#ff4757'}"></span>${isLive?'실시간':'연결 끊김'}</div><div class="lv"><span class="mh-dot ${mktSt.open?'open':'closed'}" style="width:5px;height:5px;border-radius:50%;${mktSt.open?'background:#3fb950;box-shadow:0 0 4px rgba(63,185,80,.5)':'background:var(--t3)'}"></span>${mktSt.text} · ${timeAgo()}</div></div>`;
 
   // Content
   h+='<div class="cnt">';
@@ -668,10 +647,6 @@ function R(){
 function renderHome(){
   let v=pnl(),p=pnlP(),h='';
   const hasHold=st.hold.length>0;
-  const mkt=getMarketStatus();
-
-  // 장 상태
-  h+=`<div class="mkt-hours"><span class="mh-dot ${mkt.open?'open':'closed'}"></span>${mkt.text}</div>`;
 
   h+=`<div class="porto">
     <div class="p-label">총 평가자산</div>
@@ -768,33 +743,11 @@ function renderBalance(){
   }
   h+='</div>';
 
-  // 적금 섹션
-  h+=`<div class="bal-sec saving">
-    <div class="bs-hd"><span class="bs-icon">적금 목록</span><span class="bs-total">${F(totalSav)}원</span></div>`;
-  if(st.savings.length===0){
-    h+='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">등록된 적금이 없습니다</div>';
-  }else{
-    st.savings.forEach((s,i)=>{
-      h+=`<div class="sav-item">
-        <div class="sav-l">
-          <div class="sav-name">${s.name}</div>
-        </div>
-        <div class="sav-r" style="display:flex;align-items:center;gap:10px">
-          <div class="sav-amt">${F(s.amount)}원</div>
-          <span onclick="delSaving(${i})" style="color:var(--t3);font-size:18px;cursor:pointer;padding:4px">✕</span>
-        </div>
-      </div>`;
-    });
-  }
-  h+=`<div class="sav-add" onclick="openSavModal()"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>적금 추가</div>`;
-  h+='</div>';
-
   // 총 자산 합계
   h+=`<div class="bal-sec">
     <div class="bs-hd"><span class="bs-icon" style="color:var(--t1)">총 자산 합계</span></div>
     <div class="sr"><label>주식 평가금액</label><span class="srv">${F(totalStock)}원</span></div>
-    <div class="sr"><label>적금 총액</label><span class="srv">${F(totalSav)}원</span></div>
-    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px">${F(totalStock+totalSav)}원</span></div>
+    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px">${F(totalStock)}원</span></div>
   </div>`;
 
   h+='</div>';
@@ -1286,6 +1239,18 @@ if('serviceWorker' in navigator){
   }
 }
 
+
+/* ===== MARKET HOURS ===== */
+function getMarketStatus(){
+  const now=new Date();
+  const h=now.getHours(),m=now.getMinutes(),day=now.getDay();
+  if(day===0||day===6)return{open:false,text:'주말 휴장'};
+  if(h<9||(h===9&&m===0))return{open:false,text:'장 개장 전 (09:00~)'};
+  if(h>=9&&h<15||(h===15&&m<=30))return{open:true,text:'정규장 운영중'};
+  if(h>=15&&h<18)return{open:false,text:'시간외 종가매매'};
+  return{open:false,text:'장 마감'};
+}
+
 /* ===== SPLASH SCREEN ===== */
 function runSplash(){
   const steps=['ss1','ss2','ss3','ss4'];
@@ -1307,17 +1272,6 @@ function runSplash(){
     }
   }
   next();
-}
-
-/* ===== MARKET HOURS ===== */
-function getMarketStatus(){
-  const now=new Date();
-  const h=now.getHours(),m=now.getMinutes(),day=now.getDay();
-  if(day===0||day===6)return{open:false,text:'주말 휴장'};
-  if(h<9||(h===9&&m===0))return{open:false,text:'장 개장 전 (09:00~)'};
-  if(h>=9&&h<15||(h===15&&m<=30))return{open:true,text:'정규장 운영중'};
-  if(h>=15&&h<18)return{open:false,text:'시간외 종가매매'};
-  return{open:false,text:'장 마감'};
 }
 
 /* ===== INIT ===== */
