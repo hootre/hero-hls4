@@ -508,6 +508,17 @@ input[type=number]{-moz-appearance:textfield}
 
 /* market filter 한 줄 정렬 */
 .mf{flex-wrap:wrap;align-items:center}
+
+/* ===== 모달 드래그 핸들 + 트랜지션 ===== */
+.modal{position:relative;transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.tm-sheet{transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.sd-sheet{transition:transform .25s cubic-bezier(.4,0,.2,1)}
+.modal-handle{display:flex;justify-content:center;padding:4px 0 10px;cursor:grab;margin-top:-14px;touch-action:none}
+.modal-handle span{width:40px;height:4px;border-radius:2px;background:var(--border);transition:background .15s}
+.modal-handle:active span,.tm-handle:active span,.sd-handle:active span{background:var(--t3)}
+.tm-handle{display:flex;justify-content:center;padding:0 0 10px;cursor:grab;margin-top:-8px;touch-action:none}
+.tm-handle span{width:40px;height:4px;border-radius:2px;background:var(--border);transition:background .15s}
+.sd-handle{cursor:grab;touch-action:none}
 </style>
 </head>
 <body>
@@ -580,6 +591,72 @@ function saveMemoText(code){
   saveMemos();toast('메모 저장');
 }
 
+/* ===== History API: 뒤로가기 처리 ===== */
+let _navInternal=false;
+let _suppressPopstate=false;
+let _lastMainTab='home';
+const _mainTabs=['home','balance','news','market','settings'];
+
+function pushHist(state){
+  if(_navInternal)return;
+  try{history.pushState(state||{},'')}catch(e){}
+}
+
+window.addEventListener('popstate',()=>{
+  if(_suppressPopstate){_suppressPopstate=false;return}
+  _navInternal=true;
+  try{
+    // 모달 우선 닫기 (최상위부터)
+    if(tradeModalOpen){closeTradeModal();return}
+    if(depositModalOpen){closeDepositModal();return}
+    if(resetModalOpen){closeResetModal();return}
+    if(sdOpen){closeStockDetail();return}
+    // 메인탭이 아니면 이전 메인탭으로
+    if(!_mainTabs.includes(st.tab)){st.tab=_lastMainTab;R()}
+  }finally{_navInternal=false}
+});
+
+/* ===== 모달 swipe-to-close (모바일 드래그 닫기) ===== */
+function attachSwipeClose(sheet,closeFn,handle){
+  if(!sheet)return;
+  const target=handle||sheet;
+  let startY=0,currentY=0,dragging=false,fromHandle=!!handle;
+  function start(e){
+    // 핸들이 아닌 경우(시트 전체)에서는 스크롤 맨 위에서만 드래그
+    if(!fromHandle&&sheet.scrollTop>0)return;
+    startY=(e.touches?e.touches[0].clientY:e.clientY);
+    currentY=startY;dragging=true;
+    sheet.style.transition='none';
+  }
+  function move(e){
+    if(!dragging)return;
+    currentY=(e.touches?e.touches[0].clientY:e.clientY);
+    const dy=currentY-startY;
+    if(dy>0){
+      sheet.style.transform='translateY('+dy+'px)';
+      if(e.cancelable)e.preventDefault();
+    }else{
+      sheet.style.transform='';
+    }
+  }
+  function end(){
+    if(!dragging)return;
+    dragging=false;
+    sheet.style.transition='';
+    const dy=currentY-startY;
+    if(dy>110){
+      sheet.style.transform='translateY(100%)';
+      setTimeout(closeFn,200);
+    }else{
+      sheet.style.transform='';
+    }
+  }
+  target.addEventListener('touchstart',start,{passive:true});
+  target.addEventListener('touchmove',move,{passive:false});
+  target.addEventListener('touchend',end);
+  target.addEventListener('touchcancel',end);
+}
+
 function seedTx(){
   // 첫 실행 시 초기 거래내역 심기
   if(localStorage.getItem('hls4_tx_seeded'))return;
@@ -587,20 +664,9 @@ function seedTx(){
   transactions=[
     {code:'CASH',name:'시드머니 입금',type:'deposit',price:1,qty:10000000,date:now-86400000*60},
     {code:'005930',name:'삼성전자',type:'buy',price:138000,qty:12,date:now-86400000*45},
-    {code:'005930',name:'삼성전자',type:'buy',price:227000,qty:8,date:now-86400000*12},
-    {code:'000660',name:'SK하이닉스',type:'buy',price:0,qty:0,date:now-86400000*30} // placeholder
+    {code:'005930',name:'삼성전자',type:'buy',price:227000,qty:8,date:now-86400000*12}
   ];
-  // SK하이닉스는 현재 보유 평단 그대로
-  const skHold=st.hold.find(h=>h.c==='000660');
-  if(skHold){
-    transactions[3].price=skHold.ap;
-    transactions[3].qty=skHold.q;
-  }else{
-    // 보유정보 없으면 기본값
-    transactions[3].price=1400000;
-    transactions[3].qty=5;
-  }
-  // 삼성전자 보유 정보도 갱신 (평단 = 가중평균)
+  // 삼성전자 보유 정보 갱신 (평단 = 가중평균)
   const samAvg=Math.round((138000*12+227000*8)/20);
   const samHold=st.hold.find(h=>h.c==='005930');
   if(!samHold){
@@ -608,15 +674,27 @@ function seedTx(){
   }else{
     samHold.ap=samAvg;samHold.q=20;
   }
+  // SK하이닉스는 거래내역 없이 보유만 (시드 보유)
+  const skHold=st.hold.find(h=>h.c==='000660');
   if(!skHold){
     st.hold.push({c:'000660',n:'SK하이닉스',ap:1400000,q:5});
   }
-  // 시드머니 10,000,000원 지급 (기존 보유는 별도 자산)
   st.cash=10000000;
   st.seasonStart=now-86400000*60;
   st.initialSeed=10000000;
   saveHoldings();saveTx();saveCash();saveSeason();
   localStorage.setItem('hls4_tx_seeded','1');
+}
+
+/* 기존 사용자: SK하이닉스 시드 placeholder 거래 제거 */
+function cleanupLegacyData(){
+  if(localStorage.getItem('hls4_cleanup_v3'))return;
+  const before=transactions.length;
+  transactions=transactions.filter(t=>!(
+    t.code==='000660'&&t.type==='buy'&&t.price===1400000&&t.qty===5
+  ));
+  if(before!==transactions.length)saveTx();
+  localStorage.setItem('hls4_cleanup_v3','1');
 }
 
 const IC={
@@ -1335,19 +1413,29 @@ let sdOpen=false,sdCode=null,sdChartData=[],sdChartPeriod='1m',sdChartLoading=fa
 function openStockDetail(code){
   const s=S.find(x=>x.code===code);
   if(!s)return;
+  const wasOpen=sdOpen;
   sdOpen=true;sdCode=code;sdChartData=[];sdChartPeriod='1m';
   const d=document.createElement('div');
   d.id='sdModal';
   renderStockDetail(d,s);
   document.body.appendChild(d);
+  if(!wasOpen)pushHist({modal:'stockDetail'});
   // 차트 불러오기
   fetchSdChart(code,'1m');
+  // swipe close 부착
+  setTimeout(()=>{
+    const sheet=d.querySelector('.sd-sheet');
+    const handle=d.querySelector('.sd-handle');
+    attachSwipeClose(sheet,closeStockDetail,handle);
+  },20);
 }
 
 function closeStockDetail(){
+  if(!sdOpen)return;
   sdOpen=false;sdCode=null;
   const m=document.getElementById('sdModal');
   if(m)m.remove();
+  if(!_navInternal&&history.state&&history.state.modal==='stockDetail'){_suppressPopstate=true;history.back()}
 }
 
 function renderStockDetail(container,s){
@@ -1457,12 +1545,12 @@ function renderStockDetail(container,s){
     </div>
   </div>`;
 
-  // 하단 매수/매도 액션바
+  // 하단 매수/매도 액션바 (매수 왼쪽 빨강 / 매도 오른쪽 파랑)
   const canSell=hd&&hd.q>0;
   html+=`<div class="sd-pad"></div>
     <div class="sd-actions">
-      <button class="sd-sell" ${canSell?'':'disabled'} onclick="openTradeModal('${code}','sell')">매도</button>
       <button class="sd-buy" onclick="openTradeModal('${code}','buy')">매수</button>
+      <button class="sd-sell" ${canSell?'':'disabled'} onclick="openTradeModal('${code}','sell')">매도</button>
     </div>`;
 
   html+=`</div></div>`;
@@ -1552,13 +1640,17 @@ let tradeModalOpen=false,tradeMode='buy',tradeCode=null,tradeQty=0;
 function openTradeModal(code,mode){
   const s=S.find(x=>x.code===code);
   if(!s){toast('종목 정보를 불러올 수 없습니다');return}
+  const wasOpen=tradeModalOpen;
   tradeModalOpen=true;tradeMode=mode;tradeCode=code;tradeQty=0;
+  if(!wasOpen)pushHist({modal:'trade'});
   renderTradeModal();
 }
 
 function closeTradeModal(){
+  if(!tradeModalOpen)return;
   tradeModalOpen=false;tradeCode=null;tradeQty=0;
   const m=document.getElementById('tradeModal');if(m)m.remove();
+  if(!_navInternal&&history.state&&history.state.modal==='trade'){_suppressPopstate=true;history.back()}
 }
 
 function renderTradeModal(){
@@ -1579,6 +1671,7 @@ function renderTradeModal(){
 
   let html=`<div class="tm-overlay" onclick="closeTradeModal()">
     <div class="tm-sheet" onclick="event.stopPropagation()">
+      <div class="tm-handle"><span></span></div>
       <div class="tm-head">
         <div class="tm-name-wrap">
           <div class="tm-name">${s.name}</div>
@@ -1628,6 +1721,11 @@ function renderTradeModal(){
   let d=document.getElementById('tradeModal');
   if(!d){d=document.createElement('div');d.id='tradeModal';document.body.appendChild(d)}
   d.innerHTML=html;
+  setTimeout(()=>{
+    const sheet=d.querySelector('.tm-sheet');
+    const handle=d.querySelector('.tm-handle');
+    attachSwipeClose(sheet,closeTradeModal,handle);
+  },20);
 }
 
 function setTradeQty(v){
@@ -1697,13 +1795,17 @@ function submitTrade(){
 let depositModalOpen=false,depositMode='in',depositAmt=0;
 
 function openDepositModal(mode){
+  const wasOpen=depositModalOpen;
   depositModalOpen=true;depositMode=mode||'in';depositAmt=0;
+  if(!wasOpen)pushHist({modal:'deposit'});
   renderDepositModal();
 }
 
 function closeDepositModal(){
+  if(!depositModalOpen)return;
   depositModalOpen=false;depositAmt=0;
   const m=document.getElementById('depositModal');if(m)m.remove();
+  if(!_navInternal&&history.state&&history.state.modal==='deposit'){_suppressPopstate=true;history.back()}
 }
 
 function renderDepositModal(){
@@ -1715,10 +1817,11 @@ function renderDepositModal(){
 
   let html=`<div class="modal-bg" onclick="closeDepositModal()">
     <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"><span></span></div>
       <div class="tm-head" style="margin-bottom:14px">
         <div class="tm-name-wrap">
-          <div class="tm-name">${isIn?'잔고 충전':'출금'}</div>
-          <div class="tm-code">${isIn?'연결계좌에서 입금':'연결계좌로 출금'}</div>
+          <div class="tm-name">${isIn?'예수금 충전':'예수금 출금'}</div>
+          <div class="tm-code">${isIn?'시드머니 추가':'예수금 빼기'}</div>
         </div>
         <div class="tm-mode ${isIn?'buy':'sell'}">${isIn?'입금':'출금'}</div>
       </div>
@@ -1760,6 +1863,11 @@ function renderDepositModal(){
   let d=document.getElementById('depositModal');
   if(!d){d=document.createElement('div');d.id='depositModal';document.body.appendChild(d)}
   d.innerHTML=html;
+  setTimeout(()=>{
+    const sheet=d.querySelector('.modal');
+    const handle=d.querySelector('.modal-handle');
+    attachSwipeClose(sheet,closeDepositModal,handle);
+  },20);
 }
 
 function setDepositAmt(v){
@@ -1792,15 +1900,21 @@ function submitDeposit(){
 let resetModalOpen=false,resetSeed=10000000;
 
 function openResetModal(){
-  resetModalOpen=true;resetSeed=10000000;renderResetModal();
+  const wasOpen=resetModalOpen;
+  resetModalOpen=true;resetSeed=10000000;
+  if(!wasOpen)pushHist({modal:'reset'});
+  renderResetModal();
 }
 function closeResetModal(){
+  if(!resetModalOpen)return;
   resetModalOpen=false;
   const m=document.getElementById('resetModal');if(m)m.remove();
+  if(!_navInternal&&history.state&&history.state.modal==='reset'){_suppressPopstate=true;history.back()}
 }
 function renderResetModal(){
   const html=`<div class="modal-bg" onclick="closeResetModal()">
     <div class="modal" onclick="event.stopPropagation()">
+      <div class="modal-handle"><span></span></div>
       <div class="m-title">시즌 초기화</div>
       <div style="font-size:12px;color:var(--t3);margin-bottom:14px;line-height:1.6">
         보유종목·예수금·거래내역이 모두 초기화되며,<br>새 시드머니로 새 시즌을 시작합니다.
@@ -1822,6 +1936,11 @@ function renderResetModal(){
   let d=document.getElementById('resetModal');
   if(!d){d=document.createElement('div');d.id='resetModal';document.body.appendChild(d)}
   d.innerHTML=html;
+  setTimeout(()=>{
+    const sheet=d.querySelector('.modal');
+    const handle=d.querySelector('.modal-handle');
+    attachSwipeClose(sheet,closeResetModal,handle);
+  },20);
 }
 function setResetSeed(v){resetSeed=v;renderResetModal()}
 function confirmReset(){
@@ -1838,7 +1957,17 @@ function confirmReset(){
 let memoModalOpen=false;
 
 /* ===== ACTIONS ===== */
-function T(t){st.tab=t;st.stxt='';if(t==='news'&&!newsFetched)fetchNews();R()}
+function T(t){
+  const prev=st.tab;
+  st.tab=t;st.stxt='';
+  if(_mainTabs.includes(t))_lastMainTab=t;
+  if(t==='news'&&!newsFetched)fetchNews();
+  // 메인탭이 아닌 페이지(sub_*, tx_history)로 진입할 때 history push
+  if(!_navInternal&&!_mainTabs.includes(t)&&t!==prev){
+    pushHist({page:t});
+  }
+  R();
+}
 function goOrder(c){openStockDetail(c)}
 
 /* ===== 서비스 워커 해제 + 캐시 삭제 ===== */
@@ -1887,7 +2016,7 @@ function runSplash(){
 }
 
 /* ===== INIT ===== */
-loadHoldings();loadTx();loadCash();loadWatchlist();loadMemos();loadSeason();seedTx();
+loadHoldings();loadTx();loadCash();loadWatchlist();loadMemos();loadSeason();seedTx();cleanupLegacyData();
 runSplash();
 fetchPrices();fetchIndices();setInterval(fetchPrices,7000);setInterval(fetchIndices,30000);
 </script>
