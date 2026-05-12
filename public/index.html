@@ -190,6 +190,7 @@ input[type=number]{-moz-appearance:textfield}
 .modal .m-btns .m-cancel{background:var(--surface3);color:var(--t2)}
 .modal .m-btns .m-ok{background:var(--accent);color:#fff}
 .modal .m-btns button:active{opacity:.8}
+.modal .m-btns button:disabled{opacity:.35;cursor:not-allowed;background:var(--surface3)!important;color:var(--t3)!important}
 
 /* ===== SETTINGS ===== */
 .stv{padding:16px 20px}
@@ -379,6 +380,134 @@ input[type=number]{-moz-appearance:textfield}
 .tx-add-btn{display:flex;align-items:center;justify-content:center;gap:6px;padding:12px;cursor:pointer;color:var(--accent);font-size:12px;font-weight:600;border-top:1px solid var(--border-light);transition:background .1s}
 .tx-add-btn:active{background:var(--surface2)}
 .tx-add-btn svg{width:14px;height:14px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ===== sd-close 겹침 해소 ===== */
+.sd-close{top:14px;right:14px;z-index:2}
+.sd-handle{padding-top:10px}
+.sd-sheet{padding-bottom:0!important}
+
+/* ===== STOCK DETAIL 하단 액션바 (매수/매도) ===== */
+.sd-actions{position:sticky;bottom:0;left:0;right:0;display:flex;gap:0;background:var(--surface);border-top:1px solid var(--border);padding:10px 14px env(safe-area-inset-bottom,14px);gap:8px;z-index:5}
+.sd-actions button{flex:1;padding:14px;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:800;cursor:pointer;font-family:inherit;letter-spacing:.5px;transition:opacity .15s;color:#fff}
+.sd-actions button:active{opacity:.8;transform:scale(.98)}
+.sd-actions .sd-buy{background:var(--up)}
+.sd-actions .sd-sell{background:var(--dn)}
+.sd-actions .sd-sell:disabled{background:var(--surface3);color:var(--t3);cursor:not-allowed}
+.sd-pad{height:12px}
+
+/* ===== TRADE MODAL (매수/매도) ===== */
+.tm-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);z-index:400;display:flex;align-items:flex-end;justify-content:center}
+.tm-sheet{background:var(--surface);border-radius:var(--radius) var(--radius) 0 0;max-width:430px;width:100%;max-height:92vh;overflow-y:auto;border:1px solid var(--border);border-bottom:none;padding:18px 20px env(safe-area-inset-bottom,20px)}
+.tm-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.tm-name-wrap{display:flex;flex-direction:column;gap:2px}
+.tm-name{font-size:17px;font-weight:800;color:var(--t1);letter-spacing:-.3px}
+.tm-code{font-size:11px;color:var(--t3);font-weight:500}
+.tm-mode{font-size:13px;font-weight:800;padding:6px 14px;border-radius:14px}
+.tm-mode.buy{background:var(--up-soft);color:var(--up)}
+.tm-mode.sell{background:var(--dn-soft);color:var(--dn)}
+
+.tm-price-box{background:var(--surface2);border-radius:var(--radius-sm);padding:14px;margin-bottom:14px;border:1px solid var(--border-light);display:flex;justify-content:space-between;align-items:flex-end}
+.tm-pb-l .tm-pb-label{font-size:11px;color:var(--t3);margin-bottom:4px;font-weight:500}
+.tm-pb-l .tm-pb-val{font-size:22px;font-weight:800;color:var(--t1);letter-spacing:-.5px}
+.tm-pb-r{font-size:12px;font-weight:700;text-align:right}
+.tm-pb-r.up{color:var(--up)}.tm-pb-r.dn{color:var(--dn)}
+
+.tm-label{font-size:11.5px;color:var(--t3);font-weight:600;margin-bottom:7px;display:block}
+.tm-qty-row{display:flex;align-items:center;gap:8px;margin-bottom:8px}
+.tm-qty-btn{width:42px;height:42px;border-radius:10px;border:1px solid var(--border);background:var(--surface2);color:var(--t1);font-size:20px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.tm-qty-btn:active{background:var(--surface3);transform:scale(.95)}
+.tm-qty-input{flex:1;text-align:center;padding:10px;border:1px solid var(--border);border-radius:10px;background:var(--surface2);color:var(--t1);font-size:17px;font-weight:800;font-family:inherit;letter-spacing:-.3px}
+.tm-qty-input:focus{outline:none;border-color:var(--accent)}
+.tm-qty-unit{font-size:13px;color:var(--t2);font-weight:600;padding:0 6px;flex-shrink:0}
+
+.tm-quick{display:grid;grid-template-columns:repeat(4,1fr);gap:5px;margin-bottom:14px}
+.tm-quick button{padding:9px 0;border:1px solid var(--border);background:var(--surface2);color:var(--t2);border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .12s}
+.tm-quick button:active{background:var(--surface3);color:var(--t1);transform:scale(.97)}
+
+.tm-summary{background:var(--surface2);border-radius:var(--radius-sm);padding:12px 14px;margin-bottom:14px;border:1px solid var(--border-light)}
+.tm-sum-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;font-size:12.5px}
+.tm-sum-row .tms-l{color:var(--t3);font-weight:500}
+.tm-sum-row .tms-v{color:var(--t1);font-weight:700}
+.tm-sum-row .tms-v.up{color:var(--up)}.tm-sum-row .tms-v.dn{color:var(--dn)}
+.tm-sum-row.total{border-top:1px solid var(--border-light);margin-top:4px;padding-top:9px}
+.tm-sum-row.total .tms-l{color:var(--t2);font-weight:700;font-size:13px}
+.tm-sum-row.total .tms-v{font-size:15px}
+
+.tm-warn{font-size:11.5px;color:#f0a030;padding:9px 12px;background:rgba(240,160,48,.08);border:1px solid rgba(240,160,48,.18);border-radius:8px;margin-bottom:10px;text-align:center;font-weight:600}
+
+.tm-submit{width:100%;padding:15px;border:none;border-radius:var(--radius-sm);font-size:15px;font-weight:800;color:#fff;font-family:inherit;cursor:pointer;letter-spacing:1px;transition:opacity .15s}
+.tm-submit:active{opacity:.85}
+.tm-submit.buy{background:var(--up)}
+.tm-submit.sell{background:var(--dn)}
+.tm-submit:disabled{background:var(--surface3);color:var(--t3);cursor:not-allowed}
+
+/* ===== CASH CARD (예수금) ===== */
+.cash-card{background:linear-gradient(135deg,#2a4a7f 0%,#3d6baa 100%);border-radius:var(--radius-sm);padding:16px;margin-bottom:12px;color:#fff;position:relative;overflow:hidden}
+.cash-card::after{content:'';position:absolute;right:-30px;top:-30px;width:110px;height:110px;border-radius:50%;background:rgba(255,255,255,.06)}
+.cash-card .cc-label{font-size:11px;color:rgba(255,255,255,.75);margin-bottom:5px;font-weight:600;letter-spacing:.3px}
+.cash-card .cc-val{font-size:24px;font-weight:800;letter-spacing:-.6px;margin-bottom:12px;position:relative;z-index:1}
+.cash-card .cc-btns{display:flex;gap:7px;position:relative;z-index:1}
+.cash-card .cc-btn{flex:1;padding:10px;border:none;border-radius:9px;background:rgba(255,255,255,.18);color:#fff;font-size:12.5px;font-weight:700;cursor:pointer;font-family:inherit;transition:background .15s}
+.cash-card .cc-btn:active{background:rgba(255,255,255,.3)}
+
+/* ===== 입출금 빠른 버튼 ===== */
+.deposit-btns{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.deposit-btns button{padding:14px;border:1px solid var(--border);border-radius:var(--radius-sm);background:var(--surface);color:var(--t1);font-size:13.5px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:7px;transition:all .15s}
+.deposit-btns button:active{transform:scale(.97);background:var(--surface2)}
+.deposit-btns button.in{border-color:rgba(63,185,80,.4);color:#3fb950}
+.deposit-btns button.out{border-color:rgba(168,189,212,.3);color:var(--t2)}
+
+/* ===== 거래내역 페이지 ===== */
+.tx-page-tabs{display:flex;gap:6px;padding:10px 20px 12px}
+.tx-page-tabs button{padding:8px 16px;border-radius:18px;border:1px solid var(--border);background:transparent;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:var(--t2);transition:all .15s}
+.tx-page-tabs button.on{background:var(--t1);color:var(--bg);border-color:var(--t1)}
+.tx-page-list{padding:0 20px}
+.tx-page-item{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--border-light)}
+.tx-page-item:last-child{border-bottom:none}
+
+/* 잔고탭 빠른 액세스 */
+.bal-quick{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}
+.bal-quick button{padding:13px;border:1px solid var(--border-light);border-radius:var(--radius-sm);background:var(--surface);color:var(--t1);font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;display:flex;align-items:center;justify-content:center;gap:6px;transition:all .15s}
+.bal-quick button:active{transform:scale(.97);background:var(--surface2)}
+.bal-quick button svg{width:15px;height:15px;stroke:var(--accent);fill:none;stroke-width:2;stroke-linecap:round}
+
+/* ===== MOCK BADGE ===== */
+.mock-badge{display:inline-block;margin-left:7px;padding:2px 7px;font-size:9px;font-weight:800;letter-spacing:.8px;background:linear-gradient(135deg,#f0a030,#e87b1a);color:#fff;border-radius:6px;vertical-align:middle;box-shadow:0 1px 3px rgba(232,123,26,.35)}
+
+/* ===== 검색바 (Market) ===== */
+.mkt-search{display:flex;align-items:center;gap:8px;margin:8px 20px 2px;padding:0 12px;background:var(--surface);border:1px solid var(--border-light);border-radius:22px;height:38px}
+.mkt-search:focus-within{border-color:var(--accent)}
+.mkt-search .ms-icon{width:14px;height:14px;stroke:var(--t3);fill:none;stroke-width:2;flex-shrink:0}
+.mkt-search input{flex:1;border:none;background:transparent;color:var(--t1);font-size:13px;font-family:inherit;outline:none;padding:0}
+.mkt-search input::placeholder{color:var(--t3)}
+.mkt-search .ms-clear{width:22px;height:22px;border:none;background:var(--surface2);color:var(--t2);border-radius:50%;cursor:pointer;font-size:11px;font-family:inherit;flex-shrink:0;display:flex;align-items:center;justify-content:center}
+
+/* ===== Watchlist (관심종목) ===== */
+.watch-star{color:#f0a030;font-size:13px;font-weight:700}
+
+/* 종목상세 우측 상단 액션 */
+.sd-actions-top{position:absolute;top:8px;right:14px;display:flex;align-items:center;gap:8px;z-index:2}
+.sd-watch{width:34px;height:34px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:var(--t3);transition:all .15s;line-height:1}
+.sd-watch.on{color:#f0a030;border-color:rgba(240,160,48,.4);background:rgba(240,160,48,.1)}
+.sd-watch:active{transform:scale(.9)}
+/* 기존 sd-close는 sd-actions-top 안으로 들어가므로 position 무효화 */
+.sd-actions-top .sd-close{position:static;top:auto;right:auto}
+
+/* ===== Memo (메모) ===== */
+.memo-input{width:100%;border:1px solid var(--border);background:var(--bg);color:var(--t1);border-radius:8px;padding:10px;font-size:12.5px;font-family:inherit;resize:vertical;min-height:60px;line-height:1.5}
+.memo-input:focus{outline:none;border-color:var(--accent)}
+.memo-input::placeholder{color:var(--t3)}
+.memo-save{margin-top:8px;padding:9px 18px;border:none;background:var(--accent);color:#fff;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:inherit;float:right}
+.memo-save:active{opacity:.85}
+
+/* ===== Seed 옵션 (리셋 모달) ===== */
+.seed-options{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:14px}
+.seed-options button{padding:13px 0;border:1px solid var(--border);background:var(--surface2);color:var(--t2);border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;transition:all .15s}
+.seed-options button:active{transform:scale(.97)}
+.seed-options button.on{background:var(--accent);color:#fff;border-color:var(--accent)}
+
+/* market filter 한 줄 정렬 */
+.mf{flex-wrap:wrap;align-items:center}
 </style>
 </head>
 <body>
@@ -397,7 +526,7 @@ input[type=number]{-moz-appearance:textfield}
 <div class="app" id="app"></div>
 <script>
 let S=[],isLive=false,lastUpdate=null,serverError=false;
-let st={tab:'home',hold:[],ot:'buy',sel:null,mf:'all',stxt:'',oq:0,op:0,pm:'market',toast:'',tt:null,savings:[],showSavModal:false};
+let st={tab:'home',hold:[],sel:null,mf:'all',stxt:'',toast:'',tt:null,cash:10000000,watchlist:[],memos:{},seasonStart:Date.now(),initialSeed:10000000};
 let chartData=[],chartPeriod='1m',chartLoading=false,lastChartCode=null;
 let newsData=[],newsLoading=false,newsFetched=false;
 let indicesData=[];
@@ -414,16 +543,49 @@ let txFilter='all'; // 'all','buy','sell'
 
 function loadHoldings(){try{const s=localStorage.getItem('hls4_holdings');if(s)st.hold=JSON.parse(s)}catch(e){}}
 function saveHoldings(){try{localStorage.setItem('hls4_holdings',JSON.stringify(st.hold))}catch(e){}}
-function loadSavings(){try{const s=localStorage.getItem('hls4_savings');if(s)st.savings=JSON.parse(s)}catch(e){}}
-function saveSavings(){try{localStorage.setItem('hls4_savings',JSON.stringify(st.savings))}catch(e){}}
 function loadTx(){try{const s=localStorage.getItem('hls4_tx');if(s)transactions=JSON.parse(s)}catch(e){}}
 function saveTx(){try{localStorage.setItem('hls4_tx',JSON.stringify(transactions))}catch(e){}}
+function loadCash(){try{const s=localStorage.getItem('hls4_cash');if(s!==null&&s!=='')st.cash=parseInt(s)||0}catch(e){}}
+function saveCash(){try{localStorage.setItem('hls4_cash',String(st.cash))}catch(e){}}
+function loadWatchlist(){try{const s=localStorage.getItem('hls4_watch');if(s)st.watchlist=JSON.parse(s)}catch(e){}}
+function saveWatchlist(){try{localStorage.setItem('hls4_watch',JSON.stringify(st.watchlist))}catch(e){}}
+function loadMemos(){try{const s=localStorage.getItem('hls4_memos');if(s)st.memos=JSON.parse(s)}catch(e){}}
+function saveMemos(){try{localStorage.setItem('hls4_memos',JSON.stringify(st.memos))}catch(e){}}
+function loadSeason(){try{
+  const s=localStorage.getItem('hls4_season');
+  if(s){const o=JSON.parse(s);st.seasonStart=o.start||Date.now();st.initialSeed=o.seed||10000000}
+}catch(e){}}
+function saveSeason(){try{localStorage.setItem('hls4_season',JSON.stringify({start:st.seasonStart,seed:st.initialSeed}))}catch(e){}}
+
+/* 관심종목 토글 */
+function toggleWatch(code){
+  const i=st.watchlist.indexOf(code);
+  if(i>=0){st.watchlist.splice(i,1);toast('관심종목 해제')}
+  else{st.watchlist.push(code);toast('관심종목 추가 ⭐')}
+  saveWatchlist();
+  if(sdOpen&&sdCode===code){
+    const s=S.find(x=>x.code===code);
+    const c=document.getElementById('sdModal');
+    if(c&&s)renderStockDetail(c,s);
+    setTimeout(drawSdChart,30);
+  }else R();
+}
+
+/* 메모 저장 */
+function saveMemoText(code){
+  const el=document.getElementById('memoText');
+  if(!el)return;
+  const v=el.value.trim();
+  if(v)st.memos[code]=v;else delete st.memos[code];
+  saveMemos();toast('메모 저장');
+}
 
 function seedTx(){
   // 첫 실행 시 초기 거래내역 심기
   if(localStorage.getItem('hls4_tx_seeded'))return;
   const now=Date.now();
   transactions=[
+    {code:'CASH',name:'시드머니 입금',type:'deposit',price:1,qty:10000000,date:now-86400000*60},
     {code:'005930',name:'삼성전자',type:'buy',price:138000,qty:12,date:now-86400000*45},
     {code:'005930',name:'삼성전자',type:'buy',price:227000,qty:8,date:now-86400000*12},
     {code:'000660',name:'SK하이닉스',type:'buy',price:0,qty:0,date:now-86400000*30} // placeholder
@@ -431,12 +593,12 @@ function seedTx(){
   // SK하이닉스는 현재 보유 평단 그대로
   const skHold=st.hold.find(h=>h.c==='000660');
   if(skHold){
-    transactions[2].price=skHold.ap;
-    transactions[2].qty=skHold.q;
+    transactions[3].price=skHold.ap;
+    transactions[3].qty=skHold.q;
   }else{
     // 보유정보 없으면 기본값
-    transactions[2].price=1400000;
-    transactions[2].qty=5;
+    transactions[3].price=1400000;
+    transactions[3].qty=5;
   }
   // 삼성전자 보유 정보도 갱신 (평단 = 가중평균)
   const samAvg=Math.round((138000*12+227000*8)/20);
@@ -449,7 +611,11 @@ function seedTx(){
   if(!skHold){
     st.hold.push({c:'000660',n:'SK하이닉스',ap:1400000,q:5});
   }
-  saveHoldings();saveTx();
+  // 시드머니 10,000,000원 지급 (기존 보유는 별도 자산)
+  st.cash=10000000;
+  st.seasonStart=now-86400000*60;
+  st.initialSeed=10000000;
+  saveHoldings();saveTx();saveCash();saveSeason();
   localStorage.setItem('hls4_tx_seeded','1');
 }
 
@@ -577,7 +743,7 @@ function switchChart(p){if(st.sel)fetchChart(st.sel,p)}
 
 /* ===== RENDER ===== */
 function R(){
-  if(st.showSavModal||sdOpen||txModalOpen)return;
+  if(sdOpen||txModalOpen||tradeModalOpen||depositModalOpen||memoModalOpen||resetModalOpen)return;
   const a=document.getElementById('app');
   if(S.length===0&&!serverError){
     if(!document.getElementById('splash'))a.innerHTML='<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;height:60vh;color:var(--t3);gap:12px;font-size:13px"><div class="spinner"></div>시세 수신 대기중...</div>';
@@ -591,8 +757,9 @@ function R(){
 
   // Header
   h+=`<div class="hdr">
-    <div class="logo"><img src="/logo.png" alt="영웅문S#" onerror="this.style.display='none'"><span class="logo-text">영웅문S#</span></div>
+    <div class="logo"><img src="/logo.png" alt="영웅문S#" onerror="this.style.display='none'"><span class="logo-text">영웅문S#</span><span class="mock-badge">MOCK</span></div>
     <div class="hdr-r">
+      <div class="ib" onclick="T('market');setTimeout(()=>{const i=document.getElementById('mktSearch');if(i)i.focus()},80)">${IC.search}</div>
       <div class="ib" onclick="toast('알림이 없습니다')">${IC.bell}</div>
       <div class="ib" onclick="T('settings')">${IC.user}</div>
     </div>
@@ -623,8 +790,9 @@ function R(){
   else if(st.tab==='settings')h+=renderSettings();
   else if(st.tab==='sub_deposit')h+=renderSubDeposit();
   else if(st.tab==='sub_analysis')h+=renderSubAnalysis();
-  else if(st.tab==='sub_products')h+=renderSubProducts();
+  else if(st.tab==='sub_watchlist')h+=renderSubWatchlist();
   else if(st.tab==='sub_ai')h+=renderSubAI();
+  else if(st.tab==='tx_history')h+=renderTxHistory();
   h+='</div>';
 
   // Toast
@@ -632,9 +800,10 @@ function R(){
 
   // Bottom nav
   const isHome=st.tab==='home'||st.tab.startsWith('sub_');
+  const isBal=st.tab==='balance'||st.tab==='tx_history';
   h+=`<div class="bn">
     <button class="${isHome?'on':''}" onclick="T('home')">${IC.home}<span class="bl">홈</span></button>
-    <button class="${st.tab==='balance'?'on':''}" onclick="T('balance')">${IC.balance}<span class="bl">잔고</span></button>
+    <button class="${isBal?'on':''}" onclick="T('balance')">${IC.balance}<span class="bl">잔고</span></button>
     <button class="${st.tab==='news'?'on':''}" onclick="T('news')">${IC.news}<span class="bl">뉴스</span></button>
     <button class="${st.tab==='market'?'on':''}" onclick="T('market')">${IC.market}<span class="bl">종목</span></button>
     <button class="${st.tab==='settings'?'on':''}" onclick="T('settings')">${IC.more}<span class="bl">더보기</span></button>
@@ -647,10 +816,11 @@ function R(){
 function renderHome(){
   let v=pnl(),p=pnlP(),h='';
   const hasHold=st.hold.length>0;
+  const totalAsset=te()+st.cash;
 
   h+=`<div class="porto">
-    <div class="p-label">총 평가자산</div>
-    <div class="p-amt">${F(te())}원</div>`;
+    <div class="p-label">총 평가자산 (예수금 포함)</div>
+    <div class="p-amt">${F(totalAsset)}원</div>`;
   if(hasHold){
     h+=`<div class="p-chg ${v>=0?'up':'dn'}">${v>=0?'▲':'▼'} ${F(Math.abs(Math.round(v)))}원 (${v>=0?'+':''}${p.toFixed(2)}%)</div>`;
   }
@@ -658,24 +828,27 @@ function renderHome(){
 
   // 퀵메뉴
   h+=`<div class="qm">
-    <div class="qm-item" onclick="T('sub_deposit')"><div class="qm-icon c1">💰</div><span class="qm-label">입출금</span></div>
-    <div class="qm-item" onclick="T('sub_analysis')"><div class="qm-icon c2">📊</div><span class="qm-label">투자분석</span></div>
-    <div class="qm-item" onclick="T('sub_products')"><div class="qm-icon c3">🏦</div><span class="qm-label">금융상품</span></div>
-    <div class="qm-item" onclick="T('sub_ai')"><div class="qm-icon c4">⚡</div><span class="qm-label">AI추천</span></div>
+    <div class="qm-item" onclick="T('sub_deposit')"><div class="qm-icon c1">💰</div><span class="qm-label">예수금</span></div>
+    <div class="qm-item" onclick="T('tx_history')"><div class="qm-icon c2">📋</div><span class="qm-label">거래내역</span></div>
+    <div class="qm-item" onclick="T('sub_watchlist')"><div class="qm-icon c3">⭐</div><span class="qm-label">관심종목</span></div>
+    <div class="qm-item" onclick="T('sub_analysis')"><div class="qm-icon c4">📊</div><span class="qm-label">투자분석</span></div>
   </div>`;
 
   h+=`<div class="grid4">
+    <div class="g4"><div class="g4l">예수금</div><div class="g4v" style="color:#3fb950">${F(st.cash)}원</div></div>
     <div class="g4"><div class="g4l">투자금액</div><div class="g4v">${F(tp())}원</div></div>
     <div class="g4"><div class="g4l">평가금액</div><div class="g4v">${F(te())}원</div></div>
     <div class="g4"><div class="g4l">평가손익</div><div class="g4v ${v>=0?'up':'dn'}">${v>=0?'+':''}${F(Math.round(v))}원</div></div>
-    <div class="g4"><div class="g4l">수익률</div><div class="g4v ${v>=0?'up':'dn'}">${v>=0?'+':''}${p.toFixed(2)}%</div></div>
   </div>`;
 
-  // 배너
-  h+=`<div class="banner" onclick="toast('이벤트 페이지 준비중')">
-    <div class="bn-badge">EVENT</div>
-    <div class="bn-title">AI 종목추천 서비스 오픈!</div>
-    <div class="bn-desc">나만의 맞춤 포트폴리오를 AI가 분석해드립니다</div>
+  // 배너 - 시즌 진행 상황
+  const seasonPnl=totalAsset-st.initialSeed;
+  const seasonRate=st.initialSeed?(seasonPnl/st.initialSeed*100):0;
+  const seasonDays=Math.max(1,Math.floor((Date.now()-st.seasonStart)/86400000));
+  h+=`<div class="banner" onclick="T('sub_analysis')">
+    <div class="bn-badge">시즌 ${seasonDays}일차</div>
+    <div class="bn-title">시즌 누적 ${seasonPnl>=0?'+':''}${seasonRate.toFixed(2)}% (${seasonPnl>=0?'+':''}${F(Math.round(seasonPnl))}원)</div>
+    <div class="bn-desc">시드머니 ${F(st.initialSeed)}원으로 시작 · 상세 분석 보기</div>
   </div>`;
 
   // 인기종목 (등락률 상위)
@@ -714,24 +887,36 @@ function renderHome(){
 /* ===== BALANCE (잔고) ===== */
 function renderBalance(){
   let h='<div class="bal">';
-  let totalStock=te(),totalSav=st.savings.reduce((a,s)=>a+s.amount,0);
-  let totalInterest=st.savings.reduce((a,s)=>{
-    let days=Math.floor((Date.now()-s.startDate)/(1000*60*60*24));
-    return a+Math.round(s.amount*s.rate/100/365*days);
-  },0);
+  let totalStock=te(),totalAsset=totalStock+st.cash;
+
+  // 예수금 카드 (충전/출금)
+  h+=`<div class="cash-card">
+    <div class="cc-label">예수금 (출금가능)</div>
+    <div class="cc-val">${F(st.cash)}원</div>
+    <div class="cc-btns">
+      <button class="cc-btn" onclick="openDepositModal('in')">＋ 충전</button>
+      <button class="cc-btn" onclick="openDepositModal('out')">－ 출금</button>
+    </div>
+  </div>`;
+
+  // 빠른 액션
+  h+=`<div class="bal-quick">
+    <button onclick="T('tx_history')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>거래내역</button>
+    <button onclick="T('market')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 7 13.5 15.5 8.5 10.5 2 17"/><polyline points="16 7 22 7 22 13"/></svg>매매하기</button>
+  </div>`;
 
   // 주식 잔고 섹션
   h+=`<div class="bal-sec stock">
     <div class="bs-hd"><span class="bs-icon">주식 잔고</span><span class="bs-total">${F(totalStock)}원</span></div>`;
   if(st.hold.length===0){
-    h+='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">보유 주식이 없습니다</div>';
+    h+='<div style="padding:28px;text-align:center;color:var(--t3);font-size:13px">보유 주식이 없습니다<br><span style="font-size:11px;opacity:.7">종목 탭에서 매수해보세요</span></div>';
   }else{
     h+=`<table class="bal-tbl">
       <tr><th>종목명</th><th>수량</th><th>매입가</th><th>현재가</th><th>손익</th></tr>`;
     st.hold.forEach(hd=>{
       let s=S.find(x=>x.code===hd.c),cur=s?s.price:hd.ap;
       let pl=(cur-hd.ap)*hd.q,pc=(cur-hd.ap)/hd.ap*100,isUp=pl>=0;
-      h+=`<tr>
+      h+=`<tr onclick="goOrder('${hd.c}')" style="cursor:pointer">
         <td>${hd.n}</td>
         <td>${F(hd.q)}</td>
         <td>${F(hd.ap)}</td>
@@ -746,65 +931,122 @@ function renderBalance(){
   // 총 자산 합계
   h+=`<div class="bal-sec">
     <div class="bs-hd"><span class="bs-icon" style="color:var(--t1)">총 자산 합계</span></div>
+    <div class="sr"><label>예수금</label><span class="srv">${F(st.cash)}원</span></div>
     <div class="sr"><label>주식 평가금액</label><span class="srv">${F(totalStock)}원</span></div>
-    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px">${F(totalStock)}원</span></div>
+    <div class="sr" style="background:var(--surface2)"><label style="font-weight:700;color:var(--t1)">총 합계</label><span class="srv" style="font-size:16px;color:var(--accent)">${F(totalAsset)}원</span></div>
   </div>`;
 
   h+='</div>';
   return h;
 }
 
-function openSavModal(){
-  st.showSavModal=true;
-  // 모달은 R() 밖에서 직접 DOM에 삽입
-  const d=document.createElement('div');
-  d.id='savModal';
-  d.innerHTML=`<div class="modal-bg" onclick="closeSavModal()">
-    <div class="modal" onclick="event.stopPropagation()">
-      <div class="m-title">적금 추가</div>
-      <div class="m-row"><label>적금명</label><input type="text" id="savName" placeholder="예: 청년희망적금"></div>
-      <div class="m-row"><label>금액 (원)</label><input type="number" id="savAmount" placeholder="1,000,000"></div>
-      <div class="m-btns">
-        <button class="m-cancel" onclick="closeSavModal()">취소</button>
-        <button class="m-ok" onclick="addSaving()">추가</button>
-      </div>
+/* ===== 거래내역 페이지 ===== */
+let txPageFilter='all'; // 'all', 'buy', 'sell', 'cash'
+
+function renderTxHistory(){
+  let h=`<div class="sub-page" style="padding:14px 0">
+    <div style="padding:0 20px"><div class="sub-back" onclick="T('balance')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>잔고로</div>
+    <div class="sub-title">거래내역</div></div>
+    <div class="tx-page-tabs">
+      <button class="${txPageFilter==='all'?'on':''}" onclick="setTxFilter('all')">전체</button>
+      <button class="${txPageFilter==='buy'?'on':''}" onclick="setTxFilter('buy')">매수</button>
+      <button class="${txPageFilter==='sell'?'on':''}" onclick="setTxFilter('sell')">매도</button>
+      <button class="${txPageFilter==='cash'?'on':''}" onclick="setTxFilter('cash')">입출금</button>
     </div>
-  </div>`;
-  document.body.appendChild(d);
-  setTimeout(()=>{const el=document.getElementById('savName');if(el)el.focus()},100);
+    <div class="tx-page-list">`;
+  let filtered=[...transactions];
+  if(txPageFilter==='buy')filtered=filtered.filter(t=>t.type==='buy');
+  else if(txPageFilter==='sell')filtered=filtered.filter(t=>t.type==='sell');
+  else if(txPageFilter==='cash')filtered=filtered.filter(t=>t.type==='deposit'||t.type==='withdraw');
+  filtered.sort((a,b)=>b.date-a.date);
+
+  if(filtered.length===0){
+    h+='<div style="text-align:center;padding:48px 20px;color:var(--t3);font-size:13px">거래내역이 없습니다</div>';
+  }else{
+    filtered.forEach(tx=>{
+      const d=new Date(tx.date);
+      const dateStr=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      let badge='',amount='',badgeCls='';
+      if(tx.type==='buy'){badge='매수';badgeCls='buy';amount='-'+F(tx.price*tx.qty)+'원'}
+      else if(tx.type==='sell'){badge='매도';badgeCls='sell';amount='+'+F(tx.price*tx.qty)+'원'}
+      else if(tx.type==='deposit'){badge='입금';badgeCls='buy';amount='+'+F(tx.qty)+'원'}
+      else if(tx.type==='withdraw'){badge='출금';badgeCls='sell';amount='-'+F(tx.qty)+'원'}
+      const subInfo=(tx.type==='buy'||tx.type==='sell')?`${F(tx.price)}원 × ${F(tx.qty)}주`:dateStr;
+      h+=`<div class="tx-page-item">
+        <div class="tx-l">
+          <span class="tx-badge ${badgeCls}">${badge}</span>
+          <div class="tx-info">
+            <div class="tx-price">${tx.name}</div>
+            <div class="tx-date">${(tx.type==='buy'||tx.type==='sell')?dateStr:'계좌 거래'}</div>
+          </div>
+        </div>
+        <div class="tx-r">
+          <div class="tx-qty ${tx.type==='buy'||tx.type==='withdraw'?'dn':'up'}" style="color:${tx.type==='buy'||tx.type==='withdraw'?'var(--dn)':'#3fb950'}">${amount}</div>
+          <div class="tx-total">${subInfo}</div>
+        </div>
+      </div>`;
+    });
+  }
+  h+=`</div></div>`;
+  return h;
 }
-function closeSavModal(){
-  st.showSavModal=false;
-  const m=document.getElementById('savModal');
-  if(m)m.remove();
-  R();
-}
-function addSaving(){
-  const name=document.getElementById('savName').value.trim();
-  const amount=parseInt(document.getElementById('savAmount').value)||0;
-  if(!name){toast('적금명을 입력해주세요');return}
-  if(amount<=0){toast('금액을 입력해주세요');return}
-  st.savings.push({name,amount,startDate:Date.now()});
-  saveSavings();closeSavModal();toast(`${name} 추가 완료`);
-}
-function delSaving(i){st.savings.splice(i,1);saveSavings();toast('적금 삭제 완료');R()}
+
+function setTxFilter(f){txPageFilter=f;R()}
+
+/* (savings 기능 제거됨 - 모의투자에 불필요) */
 
 /* ===== MARKET ===== */
+function setMarketSearch(v){st.stxt=v;renderMarketList()}
+function renderMarketList(){
+  const el=document.getElementById('mktList');if(!el)return;
+  let fl=st.mf==='all'?S:S.filter(s=>s.market===st.mf);
+  const q=(st.stxt||'').trim().toLowerCase();
+  if(q)fl=fl.filter(s=>s.name.toLowerCase().includes(q)||s.code.includes(q));
+  if(fl.length===0){el.innerHTML='<div class="empty"><div class="ei">🔍</div>검색 결과가 없습니다</div>';return}
+  let h='';
+  fl.forEach(s=>{
+    const isUp=s.changeRate>=0,isFlat=s.changeRate===0;
+    const isWatch=st.watchlist.includes(s.code);
+    h+=`<div class="si" onclick="goOrder('${s.code}')">
+      <div class="si-i"><div class="si-n">${isWatch?'<span class="watch-star">★</span> ':''}${s.name}</div><div class="si-sub">${s.code} · ${s.market}</div></div>
+      <div class="si-r"><div class="si-p">${F(s.price)}원</div><div class="si-c ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'0.00%':(isUp?'+':'')+s.changeRate.toFixed(2)+'%'}</div></div>
+    </div>`;
+  });
+  el.innerHTML=h;
+}
 function renderMarket(){
   let h='';
+  h+=`<div class="mkt-search">
+    <svg viewBox="0 0 24 24" class="ms-icon"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="mktSearch" type="text" placeholder="종목명·종목코드 검색" value="${st.stxt||''}" oninput="setMarketSearch(this.value)">
+    ${st.stxt?`<button class="ms-clear" onclick="setMarketSearch('');document.getElementById('mktSearch').value=''">✕</button>`:''}
+  </div>`;
   h+=`<div class="mf">
     <button class="${st.mf==='all'?'on':''}" onclick="st.mf='all';R()">전체</button>
     <button class="${st.mf==='KOSPI'?'on':''}" onclick="st.mf='KOSPI';R()">코스피</button>
     <button class="${st.mf==='KOSDAQ'?'on':''}" onclick="st.mf='KOSDAQ';R()">코스닥</button>
+    <button class="${st.mf==='watch'?'on':''}" onclick="st.mf='watch';R()" style="margin-left:auto">⭐ 관심</button>
   </div>`;
-  let fl=st.mf==='all'?S:S.filter(s=>s.market===st.mf);
-  fl.forEach(s=>{
-    let isUp=s.changeRate>=0,isFlat=s.changeRate===0;
-    h+=`<div class="si" onclick="goOrder('${s.code}')">
-      <div class="si-i"><div class="si-n">${s.name}</div><div class="si-sub">${s.code} · ${s.market}</div></div>
-      <div class="si-r"><div class="si-p">${F(s.price)}원</div><div class="si-c ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'0.00%':(isUp?'+':'')+s.changeRate.toFixed(2)+'%'}</div></div>
-    </div>`;
-  });
+  let fl;
+  if(st.mf==='watch')fl=S.filter(s=>st.watchlist.includes(s.code));
+  else fl=st.mf==='all'?S:S.filter(s=>s.market===st.mf);
+  const q=(st.stxt||'').trim().toLowerCase();
+  if(q)fl=fl.filter(s=>s.name.toLowerCase().includes(q)||s.code.includes(q));
+  h+='<div id="mktList">';
+  if(fl.length===0){
+    if(st.mf==='watch')h+='<div class="empty"><div class="ei">⭐</div>관심종목이 없습니다<br><span style="font-size:12px">종목 상세에서 별표를 눌러 추가하세요</span></div>';
+    else h+='<div class="empty"><div class="ei">🔍</div>검색 결과가 없습니다</div>';
+  }else{
+    fl.forEach(s=>{
+      const isUp=s.changeRate>=0,isFlat=s.changeRate===0;
+      const isWatch=st.watchlist.includes(s.code);
+      h+=`<div class="si" onclick="goOrder('${s.code}')">
+        <div class="si-i"><div class="si-n">${isWatch?'<span class="watch-star">★</span> ':''}${s.name}</div><div class="si-sub">${s.code} · ${s.market}</div></div>
+        <div class="si-r"><div class="si-p">${F(s.price)}원</div><div class="si-c ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'0.00%':(isUp?'+':'')+s.changeRate.toFixed(2)+'%'}</div></div>
+      </div>`;
+    });
+  }
+  h+='</div>';
   return h;
 }
 
@@ -849,30 +1091,59 @@ function renderNews(){
 function subBack(){return `<div class="sub-back" onclick="T('home')"><svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>뒤로</div>`}
 
 function renderSubDeposit(){
-  const totalAsset=te()+st.savings.reduce((a,s)=>a+s.amount,0);
-  return `<div class="sub-page">${subBack()}
-    <div class="sub-title">입출금</div>
-    <div class="sub-card"><div class="sc-hd">내 계좌</div>
-      <div class="sub-row"><span class="sr-l">영웅문 증권 위탁계좌</span><span class="sr-v">${F(totalAsset)}원</span></div>
-      <div class="sub-row"><span class="sr-l">예수금 (출금가능)</span><span class="sr-v">${F(Math.round(totalAsset*0.05))}원</span></div>
-      <div class="sub-row"><span class="sr-l">D+2 예수금</span><span class="sr-v">${F(Math.round(totalAsset*0.02))}원</span></div>
+  const totalAsset=te()+st.cash;
+  // 입출금 내역만 필터
+  const cashTx=transactions.filter(t=>t.type==='deposit'||t.type==='withdraw')
+    .sort((a,b)=>b.date-a.date).slice(0,10);
+
+  let h=`<div class="sub-page">${subBack()}
+    <div class="sub-title">예수금</div>
+
+    <div class="cash-card">
+      <div class="cc-label">현재 예수금 (출금가능)</div>
+      <div class="cc-val">${F(st.cash)}원</div>
+      <div class="cc-btns">
+        <button class="cc-btn" onclick="openDepositModal('in')">＋ 충전하기</button>
+        <button class="cc-btn" onclick="openDepositModal('out')">－ 출금하기</button>
+      </div>
     </div>
-    <div class="sub-card"><div class="sc-hd">최근 입출금 내역</div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">계좌 입금</span><span class="sli-desc">2026.05.04 · 신한은행</span></div><span class="sli-r green">+5,000,000원</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">주식 매수</span><span class="sli-desc">2026.05.02 · 삼성전자</span></div><span class="sli-r">-1,816,000원</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">계좌 입금</span><span class="sli-desc">2026.04.28 · 국민은행</span></div><span class="sli-r green">+3,000,000원</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">주식 매수</span><span class="sli-desc">2026.04.25 · SK하이닉스</span></div><span class="sli-r">-7,000,000원</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">배당금 입금</span><span class="sli-desc">2026.04.20 · 삼성전자</span></div><span class="sli-r green">+48,000원</span></div>
+
+    <div class="sub-card"><div class="sc-hd">자산 요약</div>
+      <div class="sub-row"><span class="sr-l">예수금</span><span class="sr-v" style="color:#3fb950">${F(st.cash)}원</span></div>
+      <div class="sub-row"><span class="sr-l">주식 평가금액</span><span class="sr-v">${F(te())}원</span></div>
+      <div class="sub-row"><span class="sr-l">총 자산</span><span class="sr-v" style="color:var(--accent);font-size:14px">${F(totalAsset)}원</span></div>
     </div>
-    <div class="sub-card"><div class="sc-hd">연결 계좌</div>
-      <div class="sub-row"><span class="sr-l">신한은행 110-***-****78</span><span class="sr-v" style="color:var(--accent);font-size:11px">주거래</span></div>
-      <div class="sub-row"><span class="sr-l">국민은행 940-***-****12</span><span class="sr-v" style="color:var(--t3);font-size:11px">보조</span></div>
+
+    <div class="sub-card"><div class="sc-hd">입출금 내역</div>`;
+
+  if(cashTx.length===0){
+    h+='<div style="padding:24px;text-align:center;color:var(--t3);font-size:12px">입출금 내역이 없습니다</div>';
+  }else{
+    cashTx.forEach(tx=>{
+      const d=new Date(tx.date);
+      const dateStr=`${d.getFullYear()}.${String(d.getMonth()+1).padStart(2,'0')}.${String(d.getDate()).padStart(2,'0')} ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')}`;
+      const isIn=tx.type==='deposit';
+      h+=`<div class="sub-list-item"><div class="sli-l"><span class="sli-name">${isIn?'예수금 충전':'예수금 출금'}</span><span class="sli-desc">${dateStr}</span></div><span class="sli-r ${isIn?'green':''}">${isIn?'+':'-'}${F(tx.qty)}원</span></div>`;
+    });
+  }
+  h+=`</div>
+
+    <div class="sn" style="padding:14px 4px;text-align:center;color:var(--t3);font-size:11px;line-height:1.7">
+      모의투자 앱이므로 충전·출금은 실제 계좌에 영향을 주지 않습니다.<br>
+      자유롭게 시드머니를 조정하며 전략을 연습하세요.
     </div>
   </div>`;
+  return h;
 }
 
 function renderSubAnalysis(){
   const v=pnl(),p=pnlP();
+  const totalAsset=te()+st.cash;
+  // 시즌 누적 수익률 (현재 총자산 vs 시드머니)
+  const seasonPnl=totalAsset-st.initialSeed;
+  const seasonRate=st.initialSeed?(seasonPnl/st.initialSeed*100):0;
+  const seasonDays=Math.max(1,Math.floor((Date.now()-st.seasonStart)/86400000));
+
   const topStock=st.hold.length>0?st.hold.reduce((best,h)=>{
     const s=S.find(x=>x.code===h.c);const cur=s?s.price:h.ap;
     const pl=(cur-h.ap)*h.q;return pl>best.pl?{name:h.n,pl}:best;
@@ -882,86 +1153,136 @@ function renderSubAnalysis(){
     const pl=(cur-h.ap)*h.q;return pl<worst.pl?{name:h.n,pl}:worst;
   },{name:'-',pl:Infinity}):null;
 
+  // 매매 통계
+  const buyCnt=transactions.filter(t=>t.type==='buy').length;
+  const sellCnt=transactions.filter(t=>t.type==='sell').length;
+  // 실현 손익 (매도 시 평단가는 보존 안 되어 근사: 매도가-시즌평균 매수가)
+  const realizedPnl=transactions.filter(t=>t.type==='sell').reduce((a,t)=>{
+    const buys=transactions.filter(b=>b.code===t.code&&b.type==='buy'&&b.date<t.date);
+    if(buys.length===0)return a;
+    const avgBuy=buys.reduce((s,b)=>s+b.price*b.qty,0)/buys.reduce((s,b)=>s+b.qty,0);
+    return a+(t.price-avgBuy)*t.qty;
+  },0);
+  // 종목 분산
+  const concentration=st.hold.length>0?(()=>{
+    const totals=st.hold.map(h=>{const s=S.find(x=>x.code===h.c);return(s?s.price:h.ap)*h.q});
+    const sum=totals.reduce((a,b)=>a+b,0);
+    const max=Math.max(...totals);
+    return sum?(max/sum*100):0;
+  })():0;
+
+  // 시즌 손익 진행 바
+  const progressPct=Math.min(100,Math.max(0,(seasonRate+50)));
+
   return `<div class="sub-page">${subBack()}
     <div class="sub-title">투자분석</div>
-    <div class="sub-card"><div class="sc-hd">수익률 추이</div>
-      <div class="sub-chart-placeholder">📈 최근 30일 수익률 차트</div>
-      <div class="sub-row"><span class="sr-l">오늘 수익률</span><span class="sr-v ${p>=0?'up':'dn'}">${p>=0?'+':''}${p.toFixed(2)}%</span></div>
-      <div class="sub-row"><span class="sr-l">이번 주</span><span class="sr-v up">+3.42%</span></div>
-      <div class="sub-row"><span class="sr-l">이번 달</span><span class="sr-v up">+8.15%</span></div>
-      <div class="sub-row"><span class="sr-l">올해 누적</span><span class="sr-v up">+24.7%</span></div>
+
+    <div class="sub-card"><div class="sc-hd">시즌 누적 성과</div>
+      <div style="padding:16px">
+        <div style="font-size:11px;color:var(--t3);margin-bottom:5px">시드머니 ${F(st.initialSeed)}원 → 현재 총자산</div>
+        <div style="font-size:24px;font-weight:800;color:${seasonPnl>=0?'var(--up)':'var(--dn)'};letter-spacing:-.5px">${seasonPnl>=0?'+':''}${F(Math.round(seasonPnl))}원</div>
+        <div style="font-size:13px;font-weight:700;color:${seasonPnl>=0?'var(--up)':'var(--dn)'};margin-top:2px">${seasonPnl>=0?'+':''}${seasonRate.toFixed(2)}% · 시즌 ${seasonDays}일차</div>
+        <div style="margin-top:10px;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;position:relative">
+          <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--t3)"></div>
+          <div style="height:100%;width:${progressPct}%;background:${seasonPnl>=0?'linear-gradient(90deg,var(--surface2) 50%,var(--up))':'linear-gradient(90deg,var(--dn),var(--surface2) 50%)'};transition:width .3s"></div>
+        </div>
+      </div>
+      <div class="sub-row"><span class="sr-l">현재 총자산</span><span class="sr-v">${F(totalAsset)}원</span></div>
+      <div class="sub-row"><span class="sr-l">예수금</span><span class="sr-v" style="color:#3fb950">${F(st.cash)}원</span></div>
+      <div class="sub-row"><span class="sr-l">주식 평가금</span><span class="sr-v">${F(te())}원</span></div>
     </div>
-    <div class="sub-card"><div class="sc-hd">포트폴리오 분석</div>
+
+    <div class="sub-card"><div class="sc-hd">보유 종목 손익</div>
+      <div class="sub-row"><span class="sr-l">평가 손익 (미실현)</span><span class="sr-v ${v>=0?'up':'dn'}">${v>=0?'+':''}${F(Math.round(v))}원 (${v>=0?'+':''}${p.toFixed(2)}%)</span></div>
+      <div class="sub-row"><span class="sr-l">실현 손익 (누적)</span><span class="sr-v ${realizedPnl>=0?'up':'dn'}">${realizedPnl>=0?'+':''}${F(Math.round(realizedPnl))}원</span></div>
       <div class="sub-row"><span class="sr-l">총 투자금액</span><span class="sr-v">${F(tp())}원</span></div>
-      <div class="sub-row"><span class="sr-l">총 평가손익</span><span class="sr-v ${v>=0?'up':'dn'}">${v>=0?'+':''}${F(Math.round(v))}원</span></div>
-      <div class="sub-row"><span class="sr-l">최고 수익 종목</span><span class="sr-v up">${topStock?topStock.name:'-'}</span></div>
-      <div class="sub-row"><span class="sr-l">최저 수익 종목</span><span class="sr-v dn">${worstStock?worstStock.name:'-'}</span></div>
-      <div class="sub-row"><span class="sr-l">보유 종목 수</span><span class="sr-v">${st.hold.length}개</span></div>
-      <div class="sub-row"><span class="sr-l">매매 횟수 (이번달)</span><span class="sr-v">${transactions.filter(t=>t.date>Date.now()-30*86400000).length}회</span></div>
+      <div class="sub-row"><span class="sr-l">최고 수익 종목</span><span class="sr-v up">${topStock&&topStock.pl>-Infinity?topStock.name+' ('+(topStock.pl>=0?'+':'')+F(Math.round(topStock.pl))+'원)':'-'}</span></div>
+      <div class="sub-row"><span class="sr-l">최저 수익 종목</span><span class="sr-v dn">${worstStock&&worstStock.pl<Infinity?worstStock.name+' ('+(worstStock.pl>=0?'+':'')+F(Math.round(worstStock.pl))+'원)':'-'}</span></div>
     </div>
-    <div class="sub-card"><div class="sc-hd">투자 성향 리포트</div>
-      <div class="sub-row"><span class="sr-l">투자 성향</span><span class="sr-v" style="color:var(--accent)">성장주 집중형</span></div>
-      <div class="sub-row"><span class="sr-l">리스크 등급</span><span class="sr-v" style="color:#f0a030">중위험</span></div>
-      <div class="sub-row"><span class="sr-l">분산투자 점수</span><span class="sr-v">62 / 100</span></div>
+
+    <div class="sub-card"><div class="sc-hd">매매 활동</div>
+      <div class="sub-row"><span class="sr-l">총 매수 횟수</span><span class="sr-v">${buyCnt}회</span></div>
+      <div class="sub-row"><span class="sr-l">총 매도 횟수</span><span class="sr-v">${sellCnt}회</span></div>
+      <div class="sub-row"><span class="sr-l">보유 종목 수</span><span class="sr-v">${st.hold.length}개</span></div>
+      <div class="sub-row"><span class="sr-l">관심종목</span><span class="sr-v">${st.watchlist.length}개</span></div>
+      <div class="sub-row"><span class="sr-l">최대 종목 비중</span><span class="sr-v" style="color:${concentration>50?'#f0a030':'var(--t1)'}">${concentration.toFixed(1)}%</span></div>
     </div>
   </div>`;
 }
 
-function renderSubProducts(){
-  return `<div class="sub-page">${subBack()}
-    <div class="sub-title">금융상품</div>
-    <div class="sub-card"><div class="sc-hd">추천 금융상품</div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">영웅문 CMA</span><span class="sli-desc">연 3.2% · 수시입출금</span></div><span class="sli-r green">연 3.2%</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">코스피200 ETF</span><span class="sli-desc">지수 추종 · 낮은 수수료</span></div><span class="sli-r green">+12.4%</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">미국 S&P500 ETF</span><span class="sli-desc">해외 분산투자 · 환헤지</span></div><span class="sli-r green">+18.2%</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">단기채권 펀드</span><span class="sli-desc">안정형 · 월배당</span></div><span class="sli-r green">연 4.1%</span></div>
-    </div>
-    <div class="sub-card"><div class="sc-hd">적금/예금</div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">청년희망적금</span><span class="sli-desc">12개월 · 우대금리 포함</span></div><span class="sli-r green">연 6.0%</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">자유적금 플러스</span><span class="sli-desc">6~36개월 · 자유납입</span></div><span class="sli-r green">연 4.5%</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">정기예금 스페셜</span><span class="sli-desc">12개월 · 만기일시지급</span></div><span class="sli-r green">연 3.8%</span></div>
-    </div>
-    <div class="sub-card"><div class="sc-hd">연금/절세</div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">IRP 퇴직연금</span><span class="sli-desc">세액공제 최대 900만원</span></div><span class="sli-r" style="color:var(--accent)">절세</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">연금저축 펀드</span><span class="sli-desc">노후 대비 · 세액공제</span></div><span class="sli-r" style="color:var(--accent)">절세</span></div>
-      <div class="sub-list-item"><div class="sli-l"><span class="sli-name">ISA 만능통장</span><span class="sli-desc">비과세 한도 400만원</span></div><span class="sli-r" style="color:var(--accent)">비과세</span></div>
-    </div>
-  </div>`;
+function renderSubWatchlist(){
+  let h=`<div class="sub-page">${subBack()}
+    <div class="sub-title">관심종목 <span style="font-size:12px;color:var(--t3);font-weight:500;margin-left:6px">${st.watchlist.length}개</span></div>`;
+  if(st.watchlist.length===0){
+    h+=`<div class="empty"><div class="ei">⭐</div>관심종목이 없습니다<br><span style="font-size:12px">종목 상세 화면에서 별표를 눌러<br>관심종목으로 추가해보세요</span></div>
+    <div style="text-align:center;margin-top:10px"><button onclick="T('market')" style="padding:11px 24px;border:1px solid var(--accent);background:transparent;color:var(--accent);border-radius:20px;font-size:13px;font-weight:700;font-family:inherit;cursor:pointer">종목 둘러보기 →</button></div>`;
+  }else{
+    h+='<div class="sub-card" style="padding:0">';
+    const sorted=st.watchlist.map(c=>S.find(x=>x.code===c)).filter(Boolean)
+      .sort((a,b)=>Math.abs(b.changeRate)-Math.abs(a.changeRate));
+    sorted.forEach(s=>{
+      const isUp=s.changeRate>=0,isFlat=s.changeRate===0;
+      h+=`<div class="si" onclick="goOrder('${s.code}')" style="padding:13px 16px">
+        <div class="si-i"><div class="si-n"><span class="watch-star">★</span> ${s.name}</div><div class="si-sub">${s.code} · ${s.market}</div></div>
+        <div class="si-r">
+          <div class="si-p">${F(s.price)}원</div>
+          <div class="si-c ${isFlat?'':(isUp?'up':'dn')}">${isFlat?'0.00%':(isUp?'+':'')+s.changeRate.toFixed(2)+'%'}</div>
+        </div>
+      </div>`;
+    });
+    // 시세에 없는 종목 (혹시)
+    const missing=st.watchlist.filter(c=>!S.find(x=>x.code===c));
+    missing.forEach(c=>{
+      h+=`<div class="si" style="padding:13px 16px">
+        <div class="si-i"><div class="si-n" style="color:var(--t3)">★ ${c}</div><div class="si-sub">시세 없음</div></div>
+        <div class="si-r"><button onclick="event.stopPropagation();toggleWatch('${c}')" style="padding:6px 10px;border:1px solid var(--border);background:var(--surface2);color:var(--t2);border-radius:8px;font-size:11px;cursor:pointer;font-family:inherit">해제</button></div>
+      </div>`;
+    });
+    h+='</div>';
+  }
+  h+='</div>';
+  return h;
 }
 
 function renderSubAI(){
-  // AI 추천 종목 - 등락률/거래량 기반 더미 스코어
-  const scored=S.slice(0,10).map(s=>({
-    name:s.name,code:s.code,price:s.price,
-    score:Math.min(98,Math.max(35,Math.round(50+s.changeRate*8+Math.random()*15)))
+  // 시세 기반 단순 스코어: 등락률 가중치 + 거래량 가중치
+  if(S.length===0)return `<div class="sub-page">${subBack()}<div class="sub-title">시장 트렌드</div><div class="empty">시세 로딩 중</div></div>`;
+  const maxVol=Math.max(...S.map(s=>s.volume||0))||1;
+  const scored=S.map(s=>({
+    name:s.name,code:s.code,price:s.price,changeRate:s.changeRate,
+    score:Math.min(99,Math.max(20,Math.round(50+s.changeRate*5+(s.volume||0)/maxVol*15)))
   })).sort((a,b)=>b.score-a.score);
 
+  const top=scored.slice(0,8);
+  const upCount=S.filter(s=>s.changeRate>0).length;
+  const dnCount=S.filter(s=>s.changeRate<0).length;
+  const flatCount=S.length-upCount-dnCount;
+  const avgChg=S.reduce((a,s)=>a+s.changeRate,0)/S.length;
+
   let h=`<div class="sub-page">${subBack()}
-    <div class="sub-title">AI 종목추천</div>
-    <div class="sub-card"><div class="sc-hd">AI 투자 분석 요약</div>
-      <div class="sub-row"><span class="sr-l">분석 모델</span><span class="sr-v">HeroAI v3.2</span></div>
-      <div class="sub-row"><span class="sr-l">분석 기준일</span><span class="sr-v">${new Date().toLocaleDateString('ko-KR')}</span></div>
-      <div class="sub-row"><span class="sr-l">시장 전망</span><span class="sr-v up">강세</span></div>
-      <div class="sub-row"><span class="sr-l">추천 전략</span><span class="sr-v" style="color:var(--accent)">성장주 비중 확대</span></div>
+    <div class="sub-title">시장 트렌드</div>
+
+    <div class="sub-card"><div class="sc-hd">오늘의 시장 요약</div>
+      <div class="sub-row"><span class="sr-l">분석 기준</span><span class="sr-v">${new Date().toLocaleDateString('ko-KR')} · ${new Date().toLocaleTimeString('ko-KR',{hour:'2-digit',minute:'2-digit'})}</span></div>
+      <div class="sub-row"><span class="sr-l">상승 종목</span><span class="sr-v up">${upCount}개</span></div>
+      <div class="sub-row"><span class="sr-l">하락 종목</span><span class="sr-v dn">${dnCount}개</span></div>
+      <div class="sub-row"><span class="sr-l">보합</span><span class="sr-v">${flatCount}개</span></div>
+      <div class="sub-row"><span class="sr-l">시장 평균 등락률</span><span class="sr-v ${avgChg>=0?'up':'dn'}">${avgChg>=0?'+':''}${avgChg.toFixed(2)}%</span></div>
     </div>
-    <div class="sub-card"><div class="sc-hd">AI 추천 TOP 종목</div>`;
-  scored.forEach(s=>{
-    const color=s.score>=75?'#3fb950':s.score>=50?'#f0a030':'var(--up)';
+
+    <div class="sub-card"><div class="sc-hd">관심도 TOP 8 (등락률·거래량 기반)</div>`;
+  top.forEach(s=>{
+    const color=s.changeRate>=0?'var(--up)':'var(--dn)';
     h+=`<div class="ai-score" onclick="goOrder('${s.code}')">
       <span class="ai-name">${s.name}</span>
       <div class="ai-bar"><div class="ai-bar-fill" style="width:${s.score}%;background:${color}"></div></div>
-      <span class="ai-pct" style="color:${color}">${s.score}점</span>
+      <span class="ai-pct" style="color:${color}">${s.score}</span>
     </div>`;
   });
   h+=`</div>
-    <div class="sub-card"><div class="sc-hd">포트폴리오 리밸런싱 제안</div>
-      <div class="sub-row"><span class="sr-l">반도체 비중</span><span class="sr-v">현재 65% → 50% 권장</span></div>
-      <div class="sub-row"><span class="sr-l">현금 비중</span><span class="sr-v">5% → 15% 권장</span></div>
-      <div class="sub-row"><span class="sr-l">해외주식 추가</span><span class="sr-v" style="color:var(--accent)">추천</span></div>
-    </div>
-    <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3);line-height:1.6">
-      * AI 추천은 참고용이며 투자 판단은 본인에게 있습니다<br>
-      * 과거 수익률이 미래 수익을 보장하지 않습니다
+    <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3);line-height:1.7">
+      * 시장 트렌드는 단순 통계이며 투자 추천이 아닙니다<br>
+      * 모의투자에서 다양한 종목을 자유롭게 시도해보세요
     </div>
   </div>`;
   return h;
@@ -969,23 +1290,43 @@ function renderSubAI(){
 
 function renderSettings(){
   let v=pnl(),p=pnlP();
-  let totalSav=st.savings.reduce((a,s)=>a+s.amount,0);
+  const totalAsset=te()+st.cash;
+  const seasonPnl=totalAsset-st.initialSeed;
+  const seasonRate=st.initialSeed?(seasonPnl/st.initialSeed*100):0;
+  const seasonDays=Math.max(1,Math.floor((Date.now()-st.seasonStart)/86400000));
+  const startDate=new Date(st.seasonStart).toLocaleDateString('ko-KR');
+
   return `<div class="stv">
-    <div class="sc"><div class="sh">보유 현황</div>
+    <div class="sc"><div class="sh">시즌 정보</div>
+    <div class="sr"><label>시즌 시작</label><span class="srv">${startDate} (${seasonDays}일 차)</span></div>
+    <div class="sr"><label>시드머니</label><span class="srv">${F(st.initialSeed)}원</span></div>
+    <div class="sr"><label>현재 총자산</label><span class="srv" style="color:var(--accent)">${F(totalAsset)}원</span></div>
+    <div class="sr"><label>시즌 누적 손익</label><span class="srv" style="color:${seasonPnl>=0?'var(--up)':'var(--dn)'}">${seasonPnl>=0?'+':''}${F(Math.round(seasonPnl))}원 (${seasonPnl>=0?'+':''}${seasonRate.toFixed(2)}%)</span></div></div>
+
+    <div class="sc"><div class="sh">현재 보유</div>
+    <div class="sr"><label>예수금</label><span class="srv" style="color:#3fb950">${F(st.cash)}원</span></div>
     <div class="sr"><label>주식 평가자산</label><span class="srv">${F(te())}원</span></div>
-    <div class="sr"><label>투자금액</label><span class="srv">${F(tp())}원</span></div>
-    <div class="sr"><label>평가손익</label><span class="srv" style="color:${v>=0?'var(--up)':'var(--dn)'}">${v>=0?'+':''}${F(Math.round(v))}원</span></div>
-    <div class="sr"><label>수익률</label><span class="srv" style="color:${v>=0?'var(--up)':'var(--dn)'}">${v>=0?'+':''}${p.toFixed(2)}%</span></div>
-    <div class="sr"><label>보유 종목</label><span class="srv">${st.hold.length}개</span></div></div>
-    <div class="sc"><div class="sh">적금 현황</div>
-    <div class="sr"><label>적금 수</label><span class="srv">${st.savings.length}개</span></div>
-    <div class="sr"><label>적금 총액</label><span class="srv">${F(totalSav)}원</span></div></div>
+    <div class="sr"><label>평가손익 (미실현)</label><span class="srv" style="color:${v>=0?'var(--up)':'var(--dn)'}">${v>=0?'+':''}${F(Math.round(v))}원 (${v>=0?'+':''}${p.toFixed(2)}%)</span></div>
+    <div class="sr"><label>보유 종목</label><span class="srv">${st.hold.length}개</span></div>
+    <div class="sr"><label>관심종목</label><span class="srv">${st.watchlist.length}개</span></div>
+    <div class="sr"><label>총 매매 횟수</label><span class="srv">${transactions.filter(t=>t.type==='buy'||t.type==='sell').length}회</span></div></div>
+
+    <div class="sc"><div class="sh">계정 관리</div>
+    <div class="sr" style="cursor:pointer" onclick="openDepositModal('in')"><label style="color:#3fb950;font-weight:600">＋ 예수금 충전</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
+    <div class="sr" style="cursor:pointer" onclick="openDepositModal('out')"><label style="color:var(--t2);font-weight:600">－ 예수금 출금</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
+    <div class="sr" style="cursor:pointer" onclick="T('tx_history')"><label>📋 거래내역 보기</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
+    <div class="sr" style="cursor:pointer" onclick="T('sub_watchlist')"><label>⭐ 관심종목 관리</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
+    <div class="sr" style="cursor:pointer" onclick="openResetModal()"><label style="color:var(--up);font-weight:600">⟲ 새 시즌 시작 (전체 초기화)</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div></div>
+
     <div class="sc"><div class="sh">앱 정보</div>
-    <div class="sr"><label>앱 이름</label><span class="srv">영웅문S#</span></div>
-    <div class="sr"><label>버전</label><span class="srv">2.0.0</span></div>
+    <div class="sr"><label>앱 이름</label><span class="srv">영웅문S# <span style="color:var(--accent);font-size:10px;margin-left:4px">MOCK</span></span></div>
+    <div class="sr"><label>버전</label><span class="srv">3.0.0</span></div>
     <div class="sr"><label>시세 갱신 주기</label><span class="srv">7초</span></div>
     <div class="sr"><label>데이터 소스</label><span class="srv">네이버 금융</span></div></div>
-    <div class="sn" style="text-align:center;padding:16px 0">모의투자 앱입니다. 실제 거래와 무관합니다.</div></div>`;
+    <div class="sn" style="text-align:center;padding:16px 0;line-height:1.7">
+      이 앱은 실제 시세를 기반으로 한 <strong style="color:var(--accent)">모의투자</strong> 서비스입니다.<br>
+      가상의 시드머니로 매매 전략을 연습해보세요.
+    </div></div>`;
 }
 
 /* ===== STOCK DETAIL POPUP ===== */
@@ -1015,11 +1356,15 @@ function renderStockDetail(container,s){
   const cur=s.price,chg=s.change||0,chgR=s.changeRate||0;
   const isUp=chgR>=0,isFlat=chgR===0;
 
+  const isWatch=st.watchlist.includes(code);
   let html=`<div class="sd-overlay" onclick="closeStockDetail()">
     <div class="sd-sheet" onclick="event.stopPropagation()">
       <div class="sd-handle"><span></span></div>
       <div class="sd-top">
-        <div class="sd-close" onclick="closeStockDetail()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        <div class="sd-actions-top">
+          <div class="sd-watch ${isWatch?'on':''}" onclick="toggleWatch('${code}')" title="관심종목">${isWatch?'★':'☆'}</div>
+          <div class="sd-close" onclick="closeStockDetail()"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></div>
+        </div>
         <div class="sd-name">${s.name}</div>
         <div class="sd-code">${code} · ${s.market||''}</div>
         <div class="sd-price-row">
@@ -1100,8 +1445,25 @@ function renderStockDetail(container,s){
       </div>`;
     });
   }
-  html+=`<div class="tx-add-btn" onclick="openTxModal('${code}','${s.name}')"><svg viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>거래 추가</div>`;
   html+=`</div></div>`;
+
+  // 메모 섹션
+  const memoText=st.memos[code]||'';
+  html+=`<div class="sd-section">
+    <div class="sd-sec-title">내 메모</div>
+    <div class="sd-sec-card" style="padding:10px 14px">
+      <textarea id="memoText" class="memo-input" placeholder="이 종목에 대한 메모를 적어보세요 (매수 이유, 목표가 등)" rows="3">${memoText.replace(/</g,'&lt;')}</textarea>
+      <button class="memo-save" onclick="saveMemoText('${code}')">메모 저장</button>
+    </div>
+  </div>`;
+
+  // 하단 매수/매도 액션바
+  const canSell=hd&&hd.q>0;
+  html+=`<div class="sd-pad"></div>
+    <div class="sd-actions">
+      <button class="sd-sell" ${canSell?'':'disabled'} onclick="openTradeModal('${code}','sell')">매도</button>
+      <button class="sd-buy" onclick="openTradeModal('${code}','buy')">매수</button>
+    </div>`;
 
   html+=`</div></div>`;
   container.innerHTML=html;
@@ -1181,53 +1543,303 @@ function drawSdChart(){
   ctx.fillText(f1,pad.l+30,H-6);ctx.fillText(f2,W-pad.r-30,H-6);
 }
 
-/* ===== TX MODAL (거래 추가) ===== */
+/* (수동 거래내역 추가 모달 제거됨 - 모의투자에서는 매수/매도 모달이 자동 기록) */
 let txModalOpen=false;
-function openTxModal(code,name){
-  txModalOpen=true;
-  const d=document.createElement('div');
-  d.id='txModal';
-  d.innerHTML=`<div class="modal-bg" onclick="closeTxModal()">
+
+/* ===== TRADE MODAL (실제 매수/매도) ===== */
+let tradeModalOpen=false,tradeMode='buy',tradeCode=null,tradeQty=0;
+
+function openTradeModal(code,mode){
+  const s=S.find(x=>x.code===code);
+  if(!s){toast('종목 정보를 불러올 수 없습니다');return}
+  tradeModalOpen=true;tradeMode=mode;tradeCode=code;tradeQty=0;
+  renderTradeModal();
+}
+
+function closeTradeModal(){
+  tradeModalOpen=false;tradeCode=null;tradeQty=0;
+  const m=document.getElementById('tradeModal');if(m)m.remove();
+}
+
+function renderTradeModal(){
+  const s=S.find(x=>x.code===tradeCode);
+  if(!s){closeTradeModal();return}
+  const hd=st.hold.find(h=>h.c===tradeCode);
+  const isBuy=tradeMode==='buy';
+  const price=s.price,chg=s.change||0,chgR=s.changeRate||0;
+  const isUp=chgR>=0;
+  const maxQty=isBuy?Math.floor(st.cash/price):(hd?hd.q:0);
+  const total=price*tradeQty;
+  const fee=Math.round(total*0.00015); // 위탁수수료 0.015%
+  const tax=isBuy?0:Math.round(total*0.0023); // 매도 시 거래세 0.23%
+  const netTotal=isBuy?(total+fee):(total-fee-tax);
+  const afterCash=isBuy?(st.cash-total-fee):(st.cash+total-fee-tax);
+  const insufficient=isBuy?(total+fee>st.cash):(tradeQty>maxQty);
+  const validQty=tradeQty>0&&tradeQty<=maxQty;
+
+  let html=`<div class="tm-overlay" onclick="closeTradeModal()">
+    <div class="tm-sheet" onclick="event.stopPropagation()">
+      <div class="tm-head">
+        <div class="tm-name-wrap">
+          <div class="tm-name">${s.name}</div>
+          <div class="tm-code">${s.code} · ${s.market||''}</div>
+        </div>
+        <div class="tm-mode ${tradeMode}">${isBuy?'매수':'매도'}</div>
+      </div>
+
+      <div class="tm-price-box">
+        <div class="tm-pb-l">
+          <div class="tm-pb-label">현재가</div>
+          <div class="tm-pb-val">${F(price)}원</div>
+        </div>
+        <div class="tm-pb-r ${isUp?'up':'dn'}">${isUp?'▲':'▼'} ${F(Math.abs(chg))}<br>(${isUp?'+':''}${chgR.toFixed(2)}%)</div>
+      </div>
+
+      <label class="tm-label">${isBuy?'매수가능':'보유수량'} · ${F(maxQty)}주 (${isBuy?F(st.cash)+'원':'평단 '+(hd?F(hd.ap):0)+'원'})</label>
+      <div class="tm-qty-row">
+        <button class="tm-qty-btn" onclick="changeTradeQty(-1)">−</button>
+        <input class="tm-qty-input" type="number" inputmode="numeric" id="tradeQtyInput" value="${tradeQty}" oninput="setTradeQty(this.value)" min="0" max="${maxQty}">
+        <span class="tm-qty-unit">주</span>
+        <button class="tm-qty-btn" onclick="changeTradeQty(1)">＋</button>
+      </div>
+      <div class="tm-quick">
+        <button onclick="setTradeQtyPct(10)">10%</button>
+        <button onclick="setTradeQtyPct(25)">25%</button>
+        <button onclick="setTradeQtyPct(50)">50%</button>
+        <button onclick="setTradeQtyPct(100)">최대</button>
+      </div>
+
+      <div class="tm-summary">
+        <div class="tm-sum-row"><span class="tms-l">주문 단가</span><span class="tms-v">${F(price)}원</span></div>
+        <div class="tm-sum-row"><span class="tms-l">주문 수량</span><span class="tms-v">${F(tradeQty)}주</span></div>
+        <div class="tm-sum-row"><span class="tms-l">주문 금액</span><span class="tms-v">${F(total)}원</span></div>
+        <div class="tm-sum-row"><span class="tms-l">수수료 (0.015%)</span><span class="tms-v">${F(fee)}원</span></div>
+        ${!isBuy?`<div class="tm-sum-row"><span class="tms-l">거래세 (0.23%)</span><span class="tms-v">${F(tax)}원</span></div>`:''}
+        <div class="tm-sum-row total"><span class="tms-l">${isBuy?'총 결제금액':'실 수령금액'}</span><span class="tms-v ${isBuy?'up':'dn'}">${F(netTotal)}원</span></div>
+        <div class="tm-sum-row"><span class="tms-l">거래 후 예수금</span><span class="tms-v">${F(afterCash)}원</span></div>
+      </div>
+
+      ${insufficient&&tradeQty>0?`<div class="tm-warn">⚠ ${isBuy?'예수금이 부족합니다':'보유수량을 초과했습니다'}</div>`:''}
+
+      <button class="tm-submit ${tradeMode}" ${(!validQty||insufficient)?'disabled':''} onclick="submitTrade()">${isBuy?'매수':'매도'} 주문</button>
+    </div>
+  </div>`;
+
+  let d=document.getElementById('tradeModal');
+  if(!d){d=document.createElement('div');d.id='tradeModal';document.body.appendChild(d)}
+  d.innerHTML=html;
+}
+
+function setTradeQty(v){
+  const s=S.find(x=>x.code===tradeCode);if(!s)return;
+  const hd=st.hold.find(h=>h.c===tradeCode);
+  const maxQty=tradeMode==='buy'?Math.floor(st.cash/s.price):(hd?hd.q:0);
+  let q=parseInt(v)||0;if(q<0)q=0;if(q>maxQty)q=maxQty;
+  tradeQty=q;renderTradeModal();
+}
+
+function changeTradeQty(delta){
+  setTradeQty(tradeQty+delta);
+}
+
+function setTradeQtyPct(pct){
+  const s=S.find(x=>x.code===tradeCode);if(!s)return;
+  const hd=st.hold.find(h=>h.c===tradeCode);
+  const maxQty=tradeMode==='buy'?Math.floor(st.cash/s.price):(hd?hd.q:0);
+  setTradeQty(Math.floor(maxQty*pct/100));
+}
+
+function submitTrade(){
+  const s=S.find(x=>x.code===tradeCode);if(!s){toast('종목 정보 오류');return}
+  const isBuy=tradeMode==='buy';
+  const price=s.price,qty=tradeQty,total=price*qty;
+  if(qty<=0){toast('수량을 입력해주세요');return}
+  const fee=Math.round(total*0.00015);
+  const tax=isBuy?0:Math.round(total*0.0023);
+
+  if(isBuy){
+    if(total+fee>st.cash){toast('예수금이 부족합니다');return}
+    // cash 차감
+    st.cash-=(total+fee);
+    // 보유 종목 업데이트 (평단 가중평균)
+    const hd=st.hold.find(h=>h.c===tradeCode);
+    if(hd){
+      const newAvg=Math.round((hd.ap*hd.q+price*qty)/(hd.q+qty));
+      hd.ap=newAvg;hd.q+=qty;
+    }else{
+      st.hold.push({c:s.code,n:s.name,ap:price,q:qty});
+    }
+  }else{
+    const hd=st.hold.find(h=>h.c===tradeCode);
+    if(!hd||hd.q<qty){toast('보유 수량이 부족합니다');return}
+    // cash 증가
+    st.cash+=(total-fee-tax);
+    hd.q-=qty;
+    if(hd.q<=0){
+      st.hold=st.hold.filter(h=>h.c!==tradeCode);
+    }
+  }
+
+  // 거래내역 기록
+  transactions.push({code:s.code,name:s.name,type:isBuy?'buy':'sell',price,qty,date:Date.now()});
+
+  saveHoldings();saveCash();saveTx();
+  closeTradeModal();
+  // 상세 모달 갱신
+  if(sdOpen&&sdCode===s.code){
+    closeStockDetail();
+    setTimeout(()=>openStockDetail(s.code),60);
+  }
+  toast(`${s.name} ${qty}주 ${isBuy?'매수':'매도'} 완료`);
+}
+
+/* ===== DEPOSIT MODAL (잔고충전 / 출금) ===== */
+let depositModalOpen=false,depositMode='in',depositAmt=0;
+
+function openDepositModal(mode){
+  depositModalOpen=true;depositMode=mode||'in';depositAmt=0;
+  renderDepositModal();
+}
+
+function closeDepositModal(){
+  depositModalOpen=false;depositAmt=0;
+  const m=document.getElementById('depositModal');if(m)m.remove();
+}
+
+function renderDepositModal(){
+  const isIn=depositMode==='in';
+  const maxOut=st.cash;
+  const insufficient=!isIn&&depositAmt>maxOut;
+  const valid=depositAmt>0&&!insufficient;
+  const afterCash=isIn?(st.cash+depositAmt):(st.cash-depositAmt);
+
+  let html=`<div class="modal-bg" onclick="closeDepositModal()">
     <div class="modal" onclick="event.stopPropagation()">
-      <div class="m-title">거래 추가 - ${name}</div>
-      <div class="m-row"><label>구분</label><select id="txType"><option value="buy">매수</option><option value="sell">매도</option></select></div>
-      <div class="m-row"><label>단가 (원)</label><input type="number" id="txPrice" placeholder="매수/매도 단가"></div>
-      <div class="m-row"><label>수량 (주)</label><input type="number" id="txQty" placeholder="수량"></div>
-      <div class="m-row"><label>날짜</label><input type="date" id="txDate" value="${new Date().toISOString().split('T')[0]}"></div>
-      <div class="m-btns">
-        <button class="m-cancel" onclick="closeTxModal()">취소</button>
-        <button class="m-ok" onclick="addTx('${code}','${name}')">추가</button>
+      <div class="tm-head" style="margin-bottom:14px">
+        <div class="tm-name-wrap">
+          <div class="tm-name">${isIn?'잔고 충전':'출금'}</div>
+          <div class="tm-code">${isIn?'연결계좌에서 입금':'연결계좌로 출금'}</div>
+        </div>
+        <div class="tm-mode ${isIn?'buy':'sell'}">${isIn?'입금':'출금'}</div>
+      </div>
+
+      <div class="tm-price-box">
+        <div class="tm-pb-l">
+          <div class="tm-pb-label">현재 예수금</div>
+          <div class="tm-pb-val">${F(st.cash)}원</div>
+        </div>
+      </div>
+
+      <label class="tm-label">금액 입력</label>
+      <div class="tm-qty-row">
+        <input class="tm-qty-input" type="number" inputmode="numeric" id="depAmtInput" value="${depositAmt}" oninput="setDepositAmt(this.value)" min="0" placeholder="0">
+        <span class="tm-qty-unit">원</span>
+      </div>
+      <div class="tm-quick">
+        <button onclick="addDepositAmt(100000)">+10만</button>
+        <button onclick="addDepositAmt(1000000)">+100만</button>
+        <button onclick="addDepositAmt(5000000)">+500만</button>
+        <button onclick="addDepositAmt(10000000)">+1천만</button>
+      </div>
+
+      <div class="tm-summary">
+        <div class="tm-sum-row"><span class="tms-l">${isIn?'입금':'출금'} 금액</span><span class="tms-v">${F(depositAmt)}원</span></div>
+        <div class="tm-sum-row"><span class="tms-l">출금 계좌</span><span class="tms-v" style="font-size:11.5px">신한은행 110-***-****78</span></div>
+        <div class="tm-sum-row total"><span class="tms-l">${isIn?'충전 후':'출금 후'} 예수금</span><span class="tms-v">${F(afterCash)}원</span></div>
+      </div>
+
+      ${insufficient?`<div class="tm-warn">⚠ 출금 가능 금액을 초과했습니다</div>`:''}
+
+      <div class="m-btns" style="margin-top:0">
+        <button class="m-cancel" onclick="closeDepositModal()">취소</button>
+        <button class="m-ok" style="background:${isIn?'#3fb950':'var(--accent)'}" ${!valid?'disabled':''} onclick="submitDeposit()">${isIn?'충전하기':'출금하기'}</button>
       </div>
     </div>
   </div>`;
-  document.body.appendChild(d);
-  setTimeout(()=>{const el=document.getElementById('txPrice');if(el)el.focus()},100);
-}
-function closeTxModal(){
-  txModalOpen=false;
-  const m=document.getElementById('txModal');if(m)m.remove();
-}
-function addTx(code,name){
-  const type=document.getElementById('txType').value;
-  const price=parseInt(document.getElementById('txPrice').value)||0;
-  const qty=parseInt(document.getElementById('txQty').value)||0;
-  const dateVal=document.getElementById('txDate').value;
-  if(price<=0){toast('단가를 입력해주세요');return}
-  if(qty<=0){toast('수량을 입력해주세요');return}
-  const date=dateVal?new Date(dateVal).getTime():Date.now();
-  transactions.push({code,name,type,price,qty,date});
-  saveTx();
-  closeTxModal();
-  // 상세팝업 새로고침
-  closeStockDetail();
-  setTimeout(()=>openStockDetail(code),100);
-  toast(`${type==='buy'?'매수':'매도'} 내역 추가`);
+
+  let d=document.getElementById('depositModal');
+  if(!d){d=document.createElement('div');d.id='depositModal';document.body.appendChild(d)}
+  d.innerHTML=html;
 }
 
+function setDepositAmt(v){
+  let n=parseInt(v)||0;if(n<0)n=0;
+  depositAmt=n;renderDepositModal();
+}
+
+function addDepositAmt(n){
+  setDepositAmt(depositAmt+n);
+}
+
+function submitDeposit(){
+  const isIn=depositMode==='in';
+  if(depositAmt<=0){toast('금액을 입력해주세요');return}
+  if(!isIn&&depositAmt>st.cash){toast('출금 가능 금액을 초과했습니다');return}
+  if(isIn){
+    st.cash+=depositAmt;
+    transactions.push({code:'CASH',name:'계좌 입금',type:'deposit',price:1,qty:depositAmt,date:Date.now()});
+  }else{
+    st.cash-=depositAmt;
+    transactions.push({code:'CASH',name:'계좌 출금',type:'withdraw',price:1,qty:depositAmt,date:Date.now()});
+  }
+  saveCash();saveTx();
+  closeDepositModal();
+  toast(`${F(depositAmt)}원 ${isIn?'충전':'출금'} 완료`);
+  R();
+}
+
+/* ===== RESET / SEASON 모달 ===== */
+let resetModalOpen=false,resetSeed=10000000;
+
+function openResetModal(){
+  resetModalOpen=true;resetSeed=10000000;renderResetModal();
+}
+function closeResetModal(){
+  resetModalOpen=false;
+  const m=document.getElementById('resetModal');if(m)m.remove();
+}
+function renderResetModal(){
+  const html=`<div class="modal-bg" onclick="closeResetModal()">
+    <div class="modal" onclick="event.stopPropagation()">
+      <div class="m-title">시즌 초기화</div>
+      <div style="font-size:12px;color:var(--t3);margin-bottom:14px;line-height:1.6">
+        보유종목·예수금·거래내역이 모두 초기화되며,<br>새 시드머니로 새 시즌을 시작합니다.
+      </div>
+      <label class="tm-label">시드머니 선택</label>
+      <div class="seed-options">
+        <button class="${resetSeed===5000000?'on':''}" onclick="setResetSeed(5000000)">500만원</button>
+        <button class="${resetSeed===10000000?'on':''}" onclick="setResetSeed(10000000)">1,000만원</button>
+        <button class="${resetSeed===50000000?'on':''}" onclick="setResetSeed(50000000)">5,000만원</button>
+        <button class="${resetSeed===100000000?'on':''}" onclick="setResetSeed(100000000)">1억원</button>
+      </div>
+      <div class="tm-warn" style="color:var(--up);background:var(--up-soft);border-color:rgba(255,90,106,.25)">⚠ 모든 데이터가 영구 삭제됩니다</div>
+      <div class="m-btns">
+        <button class="m-cancel" onclick="closeResetModal()">취소</button>
+        <button class="m-ok" style="background:var(--up)" onclick="confirmReset()">초기화</button>
+      </div>
+    </div>
+  </div>`;
+  let d=document.getElementById('resetModal');
+  if(!d){d=document.createElement('div');d.id='resetModal';document.body.appendChild(d)}
+  d.innerHTML=html;
+}
+function setResetSeed(v){resetSeed=v;renderResetModal()}
+function confirmReset(){
+  st.hold=[];st.cash=resetSeed;transactions=[];st.watchlist=[];st.memos={};
+  st.seasonStart=Date.now();st.initialSeed=resetSeed;
+  transactions.push({code:'CASH',name:'시즌 시드머니',type:'deposit',price:1,qty:resetSeed,date:Date.now()});
+  saveHoldings();saveCash();saveTx();saveWatchlist();saveMemos();saveSeason();
+  localStorage.setItem('hls4_tx_seeded','1');
+  closeResetModal();
+  toast(`${F(resetSeed)}원으로 새 시즌 시작 🚀`);R();
+}
+
+/* ===== MEMO 모달 placeholder (필요 시 확장) ===== */
+let memoModalOpen=false;
+
 /* ===== ACTIONS ===== */
-function T(t){st.tab=t;if(t==='news'&&!newsFetched)fetchNews();R()}
+function T(t){st.tab=t;st.stxt='';if(t==='news'&&!newsFetched)fetchNews();R()}
 function goOrder(c){openStockDetail(c)}
-function resetA(){st.hold=[];st.savings=[];saveHoldings();saveSavings();toast('초기화 완료')}
 
 /* ===== 서비스 워커 해제 + 캐시 삭제 ===== */
 if('serviceWorker' in navigator){
@@ -1275,7 +1887,7 @@ function runSplash(){
 }
 
 /* ===== INIT ===== */
-loadHoldings();loadSavings();loadTx();seedTx();
+loadHoldings();loadTx();loadCash();loadWatchlist();loadMemos();loadSeason();seedTx();
 runSplash();
 fetchPrices();fetchIndices();setInterval(fetchPrices,7000);setInterval(fetchIndices,30000);
 </script>
