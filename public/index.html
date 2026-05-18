@@ -532,7 +532,7 @@ input[type=number]{-moz-appearance:textfield}
     <div class="splash-step" id="ss4"><span class="ss-icon">④</span>포트폴리오 동기화</div>
   </div>
   <div class="splash-bar"><div class="splash-bar-fill" id="splashBar"></div></div>
-  <div class="splash-ver">v2.0.0 · 보라미디어</div>
+  <div class="splash-ver">v3.0.0</div>
 </div>
 <div class="app" id="app"></div>
 <script>
@@ -835,7 +835,7 @@ function R(){
 
   // Header
   h+=`<div class="hdr">
-    <div class="logo"><img src="/logo.png" alt="영웅문S#" onerror="this.style.display='none'"><span class="logo-text">영웅문S#</span><span class="mock-badge">MOCK</span></div>
+    <div class="logo"><img src="/logo.png" alt="영웅문S#" onerror="this.style.display='none'"><span class="logo-text">영웅문S#</span></div>
     <div class="hdr-r">
       <div class="ib" onclick="T('market');setTimeout(()=>{const i=document.getElementById('mktSearch');if(i)i.focus()},80)">${IC.search}</div>
       <div class="ib" onclick="toast('알림이 없습니다')">${IC.bell}</div>
@@ -919,14 +919,13 @@ function renderHome(){
     <div class="g4"><div class="g4l">평가손익</div><div class="g4v ${v>=0?'up':'dn'}">${v>=0?'+':''}${F(Math.round(v))}원</div></div>
   </div>`;
 
-  // 배너 - 시즌 진행 상황
-  const seasonPnl=totalAsset-st.initialSeed;
-  const seasonRate=st.initialSeed?(seasonPnl/st.initialSeed*100):0;
-  const seasonDays=Math.max(1,Math.floor((Date.now()-st.seasonStart)/86400000));
+  // 배너 - 누적 성과
+  const cumPnl=totalAsset-st.initialSeed;
+  const cumRate=st.initialSeed?(cumPnl/st.initialSeed*100):0;
   h+=`<div class="banner" onclick="T('sub_analysis')">
-    <div class="bn-badge">시즌 ${seasonDays}일차</div>
-    <div class="bn-title">시즌 누적 ${seasonPnl>=0?'+':''}${seasonRate.toFixed(2)}% (${seasonPnl>=0?'+':''}${F(Math.round(seasonPnl))}원)</div>
-    <div class="bn-desc">시드머니 ${F(st.initialSeed)}원으로 시작 · 상세 분석 보기</div>
+    <div class="bn-badge">내 수익률</div>
+    <div class="bn-title">누적 ${cumPnl>=0?'+':''}${cumRate.toFixed(2)}% (${cumPnl>=0?'+':''}${F(Math.round(cumPnl))}원)</div>
+    <div class="bn-desc">투자분석 상세 보기</div>
   </div>`;
 
   // 인기종목 (등락률 상위)
@@ -1205,11 +1204,6 @@ function renderSubDeposit(){
     });
   }
   h+=`</div>
-
-    <div class="sn" style="padding:14px 4px;text-align:center;color:var(--t3);font-size:11px;line-height:1.7">
-      모의투자 앱이므로 충전·출금은 실제 계좌에 영향을 주지 않습니다.<br>
-      자유롭게 시드머니를 조정하며 전략을 연습하세요.
-    </div>
   </div>`;
   return h;
 }
@@ -1217,10 +1211,9 @@ function renderSubDeposit(){
 function renderSubAnalysis(){
   const v=pnl(),p=pnlP();
   const totalAsset=te()+st.cash;
-  // 시즌 누적 수익률 (현재 총자산 vs 시드머니)
-  const seasonPnl=totalAsset-st.initialSeed;
-  const seasonRate=st.initialSeed?(seasonPnl/st.initialSeed*100):0;
-  const seasonDays=Math.max(1,Math.floor((Date.now()-st.seasonStart)/86400000));
+  // 누적 수익률 (현재 총자산 vs 시작 자산)
+  const cumPnl=totalAsset-st.initialSeed;
+  const cumRate=st.initialSeed?(cumPnl/st.initialSeed*100):0;
 
   const topStock=st.hold.length>0?st.hold.reduce((best,h)=>{
     const s=S.find(x=>x.code===h.c);const cur=s?s.price:h.ap;
@@ -1234,7 +1227,7 @@ function renderSubAnalysis(){
   // 매매 통계
   const buyCnt=transactions.filter(t=>t.type==='buy').length;
   const sellCnt=transactions.filter(t=>t.type==='sell').length;
-  // 실현 손익 (매도 시 평단가는 보존 안 되어 근사: 매도가-시즌평균 매수가)
+  // 실현 손익 (매도 시 평단가 근사: 매도가 - 누적 평균 매수가)
   const realizedPnl=transactions.filter(t=>t.type==='sell').reduce((a,t)=>{
     const buys=transactions.filter(b=>b.code===t.code&&b.type==='buy'&&b.date<t.date);
     if(buys.length===0)return a;
@@ -1249,20 +1242,20 @@ function renderSubAnalysis(){
     return sum?(max/sum*100):0;
   })():0;
 
-  // 시즌 손익 진행 바
-  const progressPct=Math.min(100,Math.max(0,(seasonRate+50)));
+  // 손익 진행 바
+  const progressPct=Math.min(100,Math.max(0,(cumRate+50)));
 
   return `<div class="sub-page">${subBack()}
     <div class="sub-title">투자분석</div>
 
-    <div class="sub-card"><div class="sc-hd">시즌 누적 성과</div>
+    <div class="sub-card"><div class="sc-hd">누적 성과</div>
       <div style="padding:16px">
-        <div style="font-size:11px;color:var(--t3);margin-bottom:5px">시드머니 ${F(st.initialSeed)}원 → 현재 총자산</div>
-        <div style="font-size:24px;font-weight:800;color:${seasonPnl>=0?'var(--up)':'var(--dn)'};letter-spacing:-.5px">${seasonPnl>=0?'+':''}${F(Math.round(seasonPnl))}원</div>
-        <div style="font-size:13px;font-weight:700;color:${seasonPnl>=0?'var(--up)':'var(--dn)'};margin-top:2px">${seasonPnl>=0?'+':''}${seasonRate.toFixed(2)}% · 시즌 ${seasonDays}일차</div>
+        <div style="font-size:11px;color:var(--t3);margin-bottom:5px">시작 자산 ${F(st.initialSeed)}원 → 현재 총자산</div>
+        <div style="font-size:24px;font-weight:800;color:${cumPnl>=0?'var(--up)':'var(--dn)'};letter-spacing:-.5px">${cumPnl>=0?'+':''}${F(Math.round(cumPnl))}원</div>
+        <div style="font-size:13px;font-weight:700;color:${cumPnl>=0?'var(--up)':'var(--dn)'};margin-top:2px">${cumPnl>=0?'+':''}${cumRate.toFixed(2)}%</div>
         <div style="margin-top:10px;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;position:relative">
           <div style="position:absolute;left:50%;top:0;bottom:0;width:1px;background:var(--t3)"></div>
-          <div style="height:100%;width:${progressPct}%;background:${seasonPnl>=0?'linear-gradient(90deg,var(--surface2) 50%,var(--up))':'linear-gradient(90deg,var(--dn),var(--surface2) 50%)'};transition:width .3s"></div>
+          <div style="height:100%;width:${progressPct}%;background:${cumPnl>=0?'linear-gradient(90deg,var(--surface2) 50%,var(--up))':'linear-gradient(90deg,var(--dn),var(--surface2) 50%)'};transition:width .3s"></div>
         </div>
       </div>
       <div class="sub-row"><span class="sr-l">현재 총자산</span><span class="sr-v">${F(totalAsset)}원</span></div>
@@ -1359,8 +1352,8 @@ function renderSubAI(){
   });
   h+=`</div>
     <div style="text-align:center;padding:16px;font-size:11px;color:var(--t3);line-height:1.7">
-      * 시장 트렌드는 단순 통계이며 투자 추천이 아닙니다<br>
-      * 모의투자에서 다양한 종목을 자유롭게 시도해보세요
+      * 시장 트렌드는 단순 통계 정보이며 투자 추천이 아닙니다<br>
+      * 투자 판단의 책임은 본인에게 있습니다
     </div>
   </div>`;
   return h;
@@ -1369,22 +1362,14 @@ function renderSubAI(){
 function renderSettings(){
   let v=pnl(),p=pnlP();
   const totalAsset=te()+st.cash;
-  const seasonPnl=totalAsset-st.initialSeed;
-  const seasonRate=st.initialSeed?(seasonPnl/st.initialSeed*100):0;
-  const seasonDays=Math.max(1,Math.floor((Date.now()-st.seasonStart)/86400000));
-  const startDate=new Date(st.seasonStart).toLocaleDateString('ko-KR');
 
   return `<div class="stv">
-    <div class="sc"><div class="sh">시즌 정보</div>
-    <div class="sr"><label>시즌 시작</label><span class="srv">${startDate} (${seasonDays}일 차)</span></div>
-    <div class="sr"><label>시드머니</label><span class="srv">${F(st.initialSeed)}원</span></div>
-    <div class="sr"><label>현재 총자산</label><span class="srv" style="color:var(--accent)">${F(totalAsset)}원</span></div>
-    <div class="sr"><label>시즌 누적 손익</label><span class="srv" style="color:${seasonPnl>=0?'var(--up)':'var(--dn)'}">${seasonPnl>=0?'+':''}${F(Math.round(seasonPnl))}원 (${seasonPnl>=0?'+':''}${seasonRate.toFixed(2)}%)</span></div></div>
-
-    <div class="sc"><div class="sh">현재 보유</div>
+    <div class="sc"><div class="sh">내 자산 현황</div>
+    <div class="sr"><label>총 자산</label><span class="srv" style="color:var(--accent)">${F(totalAsset)}원</span></div>
     <div class="sr"><label>예수금</label><span class="srv" style="color:#3fb950">${F(st.cash)}원</span></div>
     <div class="sr"><label>주식 평가자산</label><span class="srv">${F(te())}원</span></div>
-    <div class="sr"><label>평가손익 (미실현)</label><span class="srv" style="color:${v>=0?'var(--up)':'var(--dn)'}">${v>=0?'+':''}${F(Math.round(v))}원 (${v>=0?'+':''}${p.toFixed(2)}%)</span></div>
+    <div class="sr"><label>투자금액</label><span class="srv">${F(tp())}원</span></div>
+    <div class="sr"><label>평가손익</label><span class="srv" style="color:${v>=0?'var(--up)':'var(--dn)'}">${v>=0?'+':''}${F(Math.round(v))}원 (${v>=0?'+':''}${p.toFixed(2)}%)</span></div>
     <div class="sr"><label>보유 종목</label><span class="srv">${st.hold.length}개</span></div>
     <div class="sr"><label>관심종목</label><span class="srv">${st.watchlist.length}개</span></div>
     <div class="sr"><label>총 매매 횟수</label><span class="srv">${transactions.filter(t=>t.type==='buy'||t.type==='sell').length}회</span></div></div>
@@ -1393,18 +1378,8 @@ function renderSettings(){
     <div class="sr" style="cursor:pointer" onclick="openDepositModal('in')"><label style="color:#3fb950;font-weight:600">＋ 예수금 충전</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
     <div class="sr" style="cursor:pointer" onclick="openDepositModal('out')"><label style="color:var(--t2);font-weight:600">－ 예수금 출금</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
     <div class="sr" style="cursor:pointer" onclick="T('tx_history')"><label>📋 거래내역 보기</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
-    <div class="sr" style="cursor:pointer" onclick="T('sub_watchlist')"><label>⭐ 관심종목 관리</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div>
-    <div class="sr" style="cursor:pointer" onclick="openResetModal()"><label style="color:var(--up);font-weight:600">⟲ 새 시즌 시작 (전체 초기화)</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div></div>
-
-    <div class="sc"><div class="sh">앱 정보</div>
-    <div class="sr"><label>앱 이름</label><span class="srv">영웅문S# <span style="color:var(--accent);font-size:10px;margin-left:4px">MOCK</span></span></div>
-    <div class="sr"><label>버전</label><span class="srv">3.0.0</span></div>
-    <div class="sr"><label>시세 갱신 주기</label><span class="srv">7초</span></div>
-    <div class="sr"><label>데이터 소스</label><span class="srv">네이버 금융</span></div></div>
-    <div class="sn" style="text-align:center;padding:16px 0;line-height:1.7">
-      이 앱은 실제 시세를 기반으로 한 <strong style="color:var(--accent)">모의투자</strong> 서비스입니다.<br>
-      가상의 시드머니로 매매 전략을 연습해보세요.
-    </div></div>`;
+    <div class="sr" style="cursor:pointer" onclick="T('sub_watchlist')"><label>⭐ 관심종목 관리</label><span class="srv" style="color:var(--t3);font-size:11px">＞</span></div></div>
+    </div>`;
 }
 
 /* ===== STOCK DETAIL POPUP ===== */
@@ -1915,9 +1890,9 @@ function renderResetModal(){
   const html=`<div class="modal-bg" onclick="closeResetModal()">
     <div class="modal" onclick="event.stopPropagation()">
       <div class="modal-handle"><span></span></div>
-      <div class="m-title">시즌 초기화</div>
+      <div class="m-title">계좌 초기화</div>
       <div style="font-size:12px;color:var(--t3);margin-bottom:14px;line-height:1.6">
-        보유종목·예수금·거래내역이 모두 초기화되며,<br>새 시드머니로 새 시즌을 시작합니다.
+        보유종목·예수금·거래내역이 모두 초기화되며,<br>선택한 금액으로 새로 시작합니다.
       </div>
       <label class="tm-label">시드머니 선택</label>
       <div class="seed-options">
@@ -1946,11 +1921,11 @@ function setResetSeed(v){resetSeed=v;renderResetModal()}
 function confirmReset(){
   st.hold=[];st.cash=resetSeed;transactions=[];st.watchlist=[];st.memos={};
   st.seasonStart=Date.now();st.initialSeed=resetSeed;
-  transactions.push({code:'CASH',name:'시즌 시드머니',type:'deposit',price:1,qty:resetSeed,date:Date.now()});
+  transactions.push({code:'CASH',name:'계좌 입금',type:'deposit',price:1,qty:resetSeed,date:Date.now()});
   saveHoldings();saveCash();saveTx();saveWatchlist();saveMemos();saveSeason();
   localStorage.setItem('hls4_tx_seeded','1');
   closeResetModal();
-  toast(`${F(resetSeed)}원으로 새 시즌 시작 🚀`);R();
+  toast(`${F(resetSeed)}원으로 계좌 초기화 완료`);R();
 }
 
 /* ===== MEMO 모달 placeholder (필요 시 확장) ===== */
